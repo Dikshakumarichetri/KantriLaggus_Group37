@@ -53,29 +53,7 @@ const RecordingLibrary: React.FC = () => {
         }
     };
 
-    // Translate instead of Transcribe
-    const handleTranslate = async (filename: string, recordingId: string) => {
-        setTranslating(recordingId);
-        try {
-            const res = await fetch(`${API_URL}/transcribe`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${authToken}`
-                },
-                body: JSON.stringify({ filename, language: preferredLanguage })
-            });
-            if (!res.ok) throw new Error('Translation failed.');
-            const { transcript } = await res.json();
-            const phraseList = JSON.parse(localStorage.getItem('phraseList') || '[]');
-            phraseList.push({ filename, translation: transcript, language: preferredLanguage, date: Date.now() });
-            localStorage.setItem('phraseList', JSON.stringify(phraseList));
-            alert('Translation saved! Check Phrase List.');
-        } catch {
-            alert('Translation failed.');
-        }
-        setTranslating(null);
-    };
+
 
     return (
         <IonPage>
@@ -112,16 +90,8 @@ const RecordingLibrary: React.FC = () => {
                                         <IonButton fill="clear" size="small" className="download-btn" download={rec.filename} href={`${API_URL}/recordings/${rec.filename}`}>
                                             <IonIcon icon={downloadOutline} size="small" color="light" slot="icon-only" />
                                         </IonButton>
-                                        <IonButton
-                                            fill="clear"
-                                            size="small"
-                                            className="transcribe-btn"
-                                            onClick={() => handleTranslate(rec.filename, rec._id)}
-                                            disabled={translating === rec._id}
-                                        >
-                                            <IonIcon icon={micOutline} size="small" color="light" slot="icon-only" />
-                                            {translating === rec._id && <IonSpinner name="dots" />}
-                                        </IonButton>
+
+
                                     </div>
                                 </IonItem>
                             ))}

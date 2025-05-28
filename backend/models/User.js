@@ -4,7 +4,7 @@ const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
     phone: { type: String, required: true, unique: true },
     language: { type: String, default: 'English' },
-    password: { type: String }, // Optional, for now
+    password: { type: String },
     createdAt: { type: Date, default: Date.now }
 });
 

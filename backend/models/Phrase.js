@@ -5,7 +5,7 @@ const PhraseSchema = new mongoose.Schema({
     filename: { type: String, required: true },
     date: { type: Date, default: Date.now },
     transcription: { type: String },
-    translation: { type: String } // If you add translation later
+    translation: { type: String }
 });
 
 module.exports = mongoose.model('Phrase', PhraseSchema);

@@ -39,7 +39,7 @@
     align-items: center;
     color: var(--color-text);
     text-align: center;
-    transition: box-shadow 0.3s;
+    transition: box-shadow 0.3s, padding 0.2s, max-width 0.2s;
 }
 
 .login-container:hover {
@@ -121,12 +121,40 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 360px) {
+@media (max-width: 700px) {
+    .login-page {
+        padding: 0;
+    }
+
     .login-container {
-        padding: 32px 24px 24px 24px;
+        max-width: 98vw;
+        padding: 24px 4vw 24px 4vw;
+        border-radius: 19px;
     }
 
     .login-title {
-        font-size: 1.75rem;
+        font-size: 1.45rem;
+        margin-bottom: 1.1rem;
+    }
+
+    .input-field {
+        font-size: 0.97rem;
+        padding: 0.42rem 0.7rem;
+    }
+
+    .login-button {
+        font-size: 1rem;
+        padding: 12px 0;
+    }
+}
+
+@media (max-width: 420px) {
+    .login-container {
+        padding: 13px 1vw 13px 1vw;
+        border-radius: 10px;
+    }
+
+    .login-title {
+        font-size: 1.08rem;
     }
 }
