@@ -1,0 +1,168 @@
+.library-page {
+    --background: #6264dc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.library-container {
+    background-color: #1F315B;
+    border-radius: 40px;
+    width: 360px;
+    min-height: 720px;
+    padding: 38px 16px 24px 16px;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    margin: 38px auto;
+    box-shadow: 0 10px 32px rgba(86, 93, 130, 0.13);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.back-btn {
+    position: absolute;
+    left: 16px;
+    top: 22px;
+    min-width: 0;
+    width: 44px;
+    height: 44px;
+    --color: #fff;
+    z-index: 2;
+}
+
+.back-btn ion-icon {
+    font-size: 28px;
+    color: #fff;
+}
+
+.library-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 8px 0 24px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.loading-spinner {
+    margin-top: 40px;
+}
+
+.no-recordings {
+    display: block;
+    margin: 48px auto 0;
+    text-align: center;
+    color: #aac6f4;
+}
+
+.recording-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.recording-list::-webkit-scrollbar {
+    width: 8px;
+    background: #202d4a;
+}
+
+.recording-list::-webkit-scrollbar-thumb {
+    background: #253870;
+    border-radius: 6px;
+}
+
+.recording-item {
+    /* transparent Ionic item background */
+    --background: transparent;
+    --background-focused: transparent;
+
+    /* outer gradient border */
+    background: linear-gradient(90deg, #3A75DB 0%, #1F315B 100%);
+    padding: 2px;
+    /* thin border thickness */
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(28, 44, 100, 0.14);
+    transition: box-shadow 0.2s;
+    width: 100%;
+}
+
+.recording-item:hover {
+    box-shadow: 0 12px 48px rgba(28, 44, 100, 0.24);
+}
+
+/* inner content panel */
+.recording-item .recording-inner {
+    background-color: #1F315B;
+    border-radius: 18px;
+    padding: 14px 18px 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.recording-item .recording-inner .recording-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.recording-item .recording-inner .recording-index {
+    font-weight: 700;
+    font-size: 16px;
+    color: #9ab2e8;
+}
+
+.recording-item .recording-inner .recording-name {
+    font-size: 15px;
+    color: #e4ebfc;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    margin-left: 10px;
+}
+
+.recording-item .recording-inner .recording-audio {
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.recording-item .recording-inner .recording-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.edit-btn ion-icon {
+    color: #4fa7fc;
+    font-size: 22px;
+}
+
+.delete-btn ion-icon {
+    color: #ff5c5c;
+    font-size: 22px;
+}
+
+.download-btn ion-icon {
+    color: #8af2e7;
+    font-size: 22px;
+}
+
+/* Media Queries */
+@media (max-width: 480px) {
+    .library-container {
+        width: 94vw;
+        padding: 20px 3vw;
+    }
+
+    .recording-list {
+        max-height: 60vh;
+    }
+}

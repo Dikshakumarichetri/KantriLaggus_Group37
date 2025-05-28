@@ -1,0 +1,16 @@
+{
+  "name": "figma-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "server": {
+    "proxy": {
+      "/recordings": {
+        "target": "http://localhost:3001",
+        "changeOrigin": true,
+        "secure": false
+      }
+    }
+  }
+}

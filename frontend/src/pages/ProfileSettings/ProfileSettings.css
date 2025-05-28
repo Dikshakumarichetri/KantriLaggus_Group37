@@ -1,0 +1,84 @@
+.profile-page {
+    --background: #111247;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-wrapper {
+    background-color: #1F315B;
+    width: 360px;
+    height: 800px;
+    border-radius: 40px;
+    padding: 24px;
+    font-family: 'Inter', sans-serif;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 16px;
+    color: white;
+    --padding-start: 0;
+    --padding-end: 0;
+}
+
+.profile-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 60px;
+}
+
+.profile-avatar {
+    margin-top: 20px;
+    margin-bottom: 16px;
+    background-color: #27385E;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-info {
+    text-align: center;
+}
+
+.profile-name {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.profile-phone {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
+.profile-box {
+    margin-top: 32px;
+    background-color: #27385E;
+    border-radius: 20px;
+    width: 100%;
+    padding: 8px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-option {
+    justify-content: space-between;
+    padding: 16px;
+    text-align: left;
+    --color: white;
+    font-size: 16px;
+}
+
+.logout {
+    --color: #FF4D4D;
+}

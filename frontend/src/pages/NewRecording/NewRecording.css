@@ -1,0 +1,171 @@
+/* NewRecording.css */
+
+.recording-page {
+    --background: #232851;
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #232851;
+    margin: 0;
+    padding: 0;
+}
+
+.recording-wrapper,
+.recording-container {
+    background: #202d55;
+    border-radius: 32px;
+    width: 370px;
+    min-height: 560px;
+    padding: 44px 36px 32px 36px;
+    box-shadow: 0 6px 32px 0 rgba(25, 40, 90, 0.16);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    transition: box-shadow 0.3s;
+    margin: auto;
+}
+
+.recording-nav {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    z-index: 2;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.09) !important;
+    border-radius: 50%;
+    min-width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a6bfff;
+    font-size: 2rem;
+    --box-shadow: none;
+}
+
+.nav-btn:hover {
+    background: #2b3a6f !important;
+}
+
+.recording-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 56px;
+    margin-bottom: 24px;
+    letter-spacing: 0.5px;
+    color: #fff;
+}
+
+.recording-mic-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.recording-mic-icon {
+    background: #eef1fc;
+    border: 3px solid #9cbcff;
+    border-radius: 50%;
+    width: 92px;
+    height: 92px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 24px rgba(143, 179, 255, 0.10);
+    font-size: 40px;
+    color: #4972e1;
+    padding: 18px;
+}
+
+.recording-instruction {
+    font-size: 1.12rem;
+    color: #dbe7fd;
+    margin-bottom: 24px;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 0 8px;
+}
+
+.recording-btn {
+    background: linear-gradient(90deg, #4579F5 0%, #59698F 100%);
+    color: #fff;
+    border-radius: 14px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    padding: 14px 0;
+    margin-top: 18px;
+    width: 100%;
+    max-width: 220px;
+    border: none;
+    box-shadow: 0 2px 10px 0 rgba(69, 121, 245, 0.10);
+    transition: background 0.22s, box-shadow 0.22s;
+    letter-spacing: 0.5px;
+}
+
+.recording-btn:hover {
+    background: linear-gradient(90deg, #59698F 0%, #4579F5 100%);
+    box-shadow: 0 6px 24px 0 rgba(69, 121, 245, 0.18);
+}
+
+.recording-message {
+    color: #a2ffba;
+    margin-top: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+audio {
+    margin-top: 24px;
+    width: 100%;
+    outline: none;
+    border-radius: 8px;
+    background: #253A80;
+}
+
+/* Responsive for mobile */
+@media (max-width: 480px) {
+
+    .recording-wrapper,
+    .recording-container {
+        width: 96vw;
+        min-height: 430px;
+        padding: 12px 6px 20px 6px;
+    }
+
+    .recording-title {
+        font-size: 1.3rem;
+        margin-top: 42px;
+    }
+
+    .recording-mic-icon {
+        width: 62px;
+        height: 62px;
+        font-size: 24px;
+        padding: 7px;
+    }
+
+    .recording-btn {
+        max-width: 98vw;
+        font-size: 1rem;
+    }
+
+    .recording-nav {
+        padding: 0 8px;
+    }
+}

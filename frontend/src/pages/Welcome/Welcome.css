@@ -1,0 +1,102 @@
+.welcome-page {
+    --background: linear-gradient(135deg, #111247 0%, #59698F 100%);
+    width: 100vw;
+    height: 100vh;
+    background: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Subtle glowing animated circle background */
+.welcome-page::before {
+    content: "";
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle at 50% 50%, #343c7a80 0%, #1f315b10 80%, transparent 100%);
+    transform: translate(-50%, -50%);
+    filter: blur(48px);
+    z-index: 0;
+    animation: glowMove 8s infinite alternate;
+}
+
+@keyframes glowMove {
+    0% {
+        top: 40%;
+        left: 50%;
+    }
+
+    100% {
+        top: 50%;
+        left: 48%;
+    }
+}
+
+.welcome-container {
+    background: rgba(31, 49, 91, 0.70);
+    border-radius: 40px;
+    width: 360px;
+    height: 800px;
+    padding: 40px 32px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    margin: auto;
+    box-shadow: 0 8px 32px 0 rgba(21, 24, 45, 0.27), 0 0 0 2px #27336533;
+    backdrop-filter: blur(18px) saturate(150%);
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 28px;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 16px #343c7a88, 0 1px 0 #FFF2;
+    background: linear-gradient(90deg, #fff 80%, #b0bbf9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.welcome-description {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 38px;
+    color: #e0e5ff;
+    text-shadow: 0 1px 6px #11124777;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    padding: 12px;
+    transition: background 0.3s;
+}
+
+.welcome-button {
+    --background: linear-gradient(90deg, #5a6aed 60%, #96a6ff 100%);
+    --border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 6px 18px 0 #5a6aed40;
+    letter-spacing: 2px;
+    margin-top: 8px;
+    transition: filter 0.25s, box-shadow 0.25s, transform 0.1s;
+    filter: brightness(0.97);
+}
+
+.welcome-button:hover,
+.welcome-button:focus,
+.welcome-button:active {
+    filter: brightness(1.1);
+    box-shadow: 0 8px 36px 0 #5a6aed70;
+    transform: translateY(-2px) scale(1.02);
+}
