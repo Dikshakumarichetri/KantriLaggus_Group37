@@ -22,8 +22,7 @@ const Dashboard: React.FC = () => {
                         <div className="dashboard-nav-item" tabIndex={0} onClick={() => window.location.href = '/recording-library'}>
                             <IonText className="dashboard-nav-text">Recordings Library</IonText>
                         </div>
-                        <div className="dashboard-nav-item" tabIndex={0} onClick={() => window.location.href = '/profile'}>
-                        </div>
+
                     </div>
                 </div>
             </IonContent>
