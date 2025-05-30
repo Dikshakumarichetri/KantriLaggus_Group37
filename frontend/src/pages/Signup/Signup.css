@@ -1,5 +1,6 @@
 .signup-page {
-    --background: #303e74;
+    --background: radial-gradient(circle at 65% 0%, #9798c8 0, #a18879 50%, #8f9e99 100%);
+    ;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,19 +8,23 @@
 }
 
 .signup-container {
-    background: #525f98;
+    background: radial-gradient(circle at 65% 0%, #e7e5e5 0, #d0d0cd 50%, #fefefd 100%);
     border-radius: 32px;
     width: 400px;
     min-height: 700px;
     padding: 44px 36px 32px 36px;
-    box-shadow: 0 6px 32px 0 rgba(25, 40, 90, 0.16);
+    box-shadow: 0 6px 32px 0 rgba(25, 40, 90, 0.25);
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     text-align: center;
     color: #000000;
     margin: auto;
+    margin-top: 50px;
     transition: box-shadow 0.3s;
+    padding-top: 10vh;
+    border: #000000 2px;
 }
 
 .signup-title {
@@ -34,44 +39,77 @@
 .input-field {
     width: 100%;
     margin-bottom: 24px;
-    --border-radius: 14px;
+    --border-radius: 2rem;
+
     --background: #fff;
-    --color: #10162F;
-    --placeholder-color: #8A94B3;
-    --highlight-color-focused: #434141;
-    font-size: 1rem;
-    transition: box-shadow 0.2s;
-    box-shadow: 0 2px 10px 0 rgba(16, 22, 47, 0.04);
+    --color: #232851;
+
+    --placeholder-color: #a8adc7;
+    --highlight-color-focused: #59698F;
+
+    font-size: 1.05rem;
+    font-family: 'Inter', 'Poppins', sans-serif;
+    padding: 0.9rem 1.3rem;
+    border-radius: var(--border-radius);
+    background: var(--background);
+    color: var(--color);
+    border: 1.5px solid #e3e5ee;
+    outline: none;
+    box-shadow: 0 2px 10px 0 rgba(60, 79, 149, 0.08);
+    transition: border 0.18s, box-shadow 0.22s, background 0.18s;
 }
 
+.input-field::placeholder {
+    color: var(--placeholder-color);
+    opacity: 1;
+    font-style: italic;
+    letter-spacing: 0.5px;
+}
+
+.input-field:focus,
 .input-field:focus-within {
-    box-shadow: 0 4px 16px 0 rgba(143, 179, 255, 0.10);
-    border: 1.5px solid #8FB3FF;
+    border: 2px solid var(--highlight-color-focused);
+    background: #f3f5fc;
+    box-shadow: 0 6px 18px 0 rgba(89, 105, 143, 0.15);
 }
 
 .signup-button {
-    background: linear-gradient(90deg, #4579F5 0%, #59698F 100%);
+    background: linear-gradient(90deg, #f6f7f8 0%, #d8d9dd 100%);
     color: #fff;
-    border-radius: 14px;
+    border-radius: 2rem;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
     font-size: 1.1rem;
-    padding: 14px 0;
+
+    width: 8rem;
     margin-top: 18px;
-    box-shadow: 0 2px 10px 0 rgba(69, 121, 245, 0.10);
-    border: none;
-    transition: background 0.25s, box-shadow 0.25s;
+
+
+
+    transition:
+        background 0.25s,
+        color 0.25s,
+        box-shadow 0.25s,
+        transform 0.22s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
-.signup-button:hover {
-    background: linear-gradient(90deg, #59698F 0%, #4579F5 100%);
+.signup-button:hover,
+.signup-button:focus {
+    background: linear-gradient(90deg, #59698F 0%, #8c9abb 100%);
+    color: #fff;
     box-shadow: 0 6px 24px 0 rgba(69, 121, 245, 0.18);
+    transform: scale(1.05);
+    border: 0.1rem solid #fff;
 }
 
 .signup-footer {
     margin-top: 18px;
     font-size: 15px;
-    color: #A8B6D6;
+    color: #3a4662;
     font-family: 'Inter', sans-serif;
 }
 
@@ -83,21 +121,40 @@
     min-height: 140px;
 }
 
-
-/* Style IonSelect the same as inputs */
 ion-select.input-field {
     width: 100%;
     margin-bottom: 24px;
-    --border-radius: 14px;
+    --border-radius: 2rem;
+    /* Pill shape for consistency */
     --background: #fff;
-    --color: #6e7590;
-    --placeholder-color: #8A94B3;
-    font-size: 1rem;
-    box-shadow: 0 2px 10px 0 rgba(16, 22, 47, 0.04);
-    padding: 0 16px;
+    --color: #232851;
+    /* Deep navy for text */
+    --placeholder-color: #a8adc7;
+    --highlight-color-focused: #59698F;
+    font-size: 1.05rem;
+    font-family: 'Inter', 'Poppins', sans-serif;
+    padding: 0.9rem 1.3rem;
+    border-radius: var(--border-radius);
+    background: var(--background);
+    color: var(--color);
+    border: 1.5px solid #e3e5ee;
+    box-shadow: 0 2px 10px 0 rgba(60, 79, 149, 0.08);
+    transition: border 0.18s, box-shadow 0.22s, background 0.18s;
 }
 
-/* Ensure the selected text inside IonSelect is visible */
-ion-select.input-field .select-text {
+/* Placeholder/selected text color for IonSelect */
+ion-select.input-field .select-text,
+ion-select.input-field .select-placeholder {
     color: var(--color);
+    font-style: italic;
+    opacity: 0.87;
+    letter-spacing: 0.4px;
+}
+
+/* Focus state styling for select (when open) */
+ion-select.input-field:focus,
+ion-select.input-field:focus-within {
+    border: 2px solid var(--highlight-color-focused);
+    background: #f3f5fc;
+    box-shadow: 0 6px 18px 0 rgba(89, 105, 143, 0.15);
 }
