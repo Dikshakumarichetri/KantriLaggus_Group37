@@ -1,6 +1,6 @@
 # KantriLaggus
 
-A modern cross-platform app for recording, storing, transcribing, and translating spoken phrases—built with 
+An app designed for all devices to record, store, transcriber and translate spoken phrases—made with 
 **Ionic React**, **Express.js**, and **MongoDB**.
 
 ## ✨ Features
@@ -109,6 +109,8 @@ Saving important information is another role of MongoDB – it has access to the
 
 
 Using API calls, it is safe to download or stream these files from the server.
+
+
 ---
 ## 6. Phrases and Recording management
 
