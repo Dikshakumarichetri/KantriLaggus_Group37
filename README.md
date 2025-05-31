@@ -16,7 +16,7 @@ A modern cross-platform app for recording, storing, transcribing, and translatin
 
 ---
 
-## 🏗️ Tech Stack
+## 1. Tech Stack
 
 - **Frontend:** [Ionic React](https://ionicframework.com/), TypeScript, Custom CSS Modules
 - **Backend:** [Express.js](https://expressjs.com/), [Node.js](https://nodejs.org/)
@@ -28,15 +28,6 @@ A modern cross-platform app for recording, storing, transcribing, and translatin
 ---
 
 
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/yourusername/yourrepo.git
-cd yourrepo
-
-```
----
 
 ### 2. Setting Up the Backend
 
