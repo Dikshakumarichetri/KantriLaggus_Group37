@@ -198,7 +198,7 @@ const EditRecording: React.FC = () => {
             <IonContent className="edit-recording-page" fullscreen>
                 <div className="edit-wrapper">
                     <IonButton fill="clear" className="back-btn" onClick={() => history.push('/recording-library')}>
-                        <IonIcon icon={arrowBackOutline} />
+                        <IonIcon icon={arrowBackOutline} slot='icon-only' />
                     </IonButton>
                     <IonText className="edit-title">Edit Recording</IonText>
                     {error && <IonText color="danger">{error}</IonText>}
@@ -243,10 +243,10 @@ const EditRecording: React.FC = () => {
                     )}
                     {duration > 0 && (
                         <>
-                            <IonButton expand="block" className="trim-btn" onClick={playTrimmed}>
+                            <IonButton expand="block" className="trim-btn" fill="clear" onClick={playTrimmed}>
                                 Preview Trimmed Region
                             </IonButton>
-                            <IonButton expand="block" className="save-btn" onClick={trimAudio} disabled={saving}>
+                            <IonButton expand="block" className="save-btn" fill="clear" onClick={trimAudio} disabled={saving}>
                                 {saving ? "Saving..." : "Save Trim"}
                             </IonButton>
                         </>

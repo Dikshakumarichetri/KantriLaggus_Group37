@@ -68,34 +68,30 @@ const RecordingLibrary: React.FC = () => {
                     ) : recordings.length === 0 ? (
                         <IonText className="no-recordings">No recordings found.</IonText>
                     ) : (
-                        <IonList className="recording-list">
+                        <div className="recording-list">
                             {recordings.map((rec, i) => (
-                                <IonItem lines="none" className="recording-item" key={rec._id}>
-                                    <div className="gradient-border">
-                                        <div className="item-inner">
-                                            <IonLabel className="recording-meta">
-                                                <div className="recording-index">Recording {i + 1}</div>
-                                                <div className="recording-name">{rec.filename}</div>
-                                            </IonLabel>
-                                            <audio controls src={`${API_URL}/recordings/${rec.filename}`} className="recording-audio" />
+                                <div className="recording-item" key={rec._id}>
+                                    <div className="item-inner">
+                                        <div className="recording-meta">
+                                            <div className="recording-index">Recording {i + 1}</div>
+                                            <div className="recording-name">{rec.filename}</div>
+                                        </div>
+                                        <audio controls src={`${API_URL}/recordings/${rec.filename}`} className="recording-audio" />
+                                        <div className="recording-actions">
+                                            <IonButton fill="clear" size="small" className="edit-btn" onClick={() => handleEdit(rec)}>
+                                                <IonIcon icon={createOutline} size="small" color="light" slot="icon-only" />
+                                            </IonButton>
+                                            <IonButton fill="clear" size="small" className="delete-btn" onClick={() => handleDelete(rec._id)}>
+                                                <IonIcon icon={trashOutline} size="small" color="light" slot="icon-only" />
+                                            </IonButton>
+                                            <IonButton fill="clear" size="small" className="download-btn" download={rec.filename} href={`${API_URL}/recordings/${rec.filename}`}>
+                                                <IonIcon icon={downloadOutline} size="small" color="light" slot="icon-only" />
+                                            </IonButton>
                                         </div>
                                     </div>
-                                    <div className="recording-actions">
-                                        <IonButton fill="clear" size="small" className="edit-btn" onClick={() => handleEdit(rec)}>
-                                            <IonIcon icon={createOutline} size="small" color="light" slot="icon-only" />
-                                        </IonButton>
-                                        <IonButton fill="clear" size="small" className="delete-btn" onClick={() => handleDelete(rec._id)}>
-                                            <IonIcon icon={trashOutline} size="small" color="light" slot="icon-only" />
-                                        </IonButton>
-                                        <IonButton fill="clear" size="small" className="download-btn" download={rec.filename} href={`${API_URL}/recordings/${rec.filename}`}>
-                                            <IonIcon icon={downloadOutline} size="small" color="light" slot="icon-only" />
-                                        </IonButton>
-
-
-                                    </div>
-                                </IonItem>
+                                </div>
                             ))}
-                        </IonList>
+                        </div>
                     )}
                 </div>
             </IonContent>

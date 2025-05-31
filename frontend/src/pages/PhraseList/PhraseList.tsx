@@ -6,7 +6,7 @@ import {
     IonSelect, IonSelectOption, useIonViewWillEnter
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
-import { arrowBack, micOutline, trashOutline } from "ionicons/icons";
+import { arrowBack, arrowBackOutline, micOutline, trashOutline } from "ionicons/icons";
 import "./PhraseList.css";
 
 type PhraseItem = {
@@ -28,13 +28,13 @@ const LANGUAGE_OPTIONS = [
     { label: "English", value: "en" },
     { label: "Nepali", value: "ne" },
     { label: "Hindi", value: "hi" },
-    // Add more as needed
+
 ];
 const LANGUAGE_CODE_MAP: { [key: string]: string } = {
     English: "en",
     Nepali: "ne",
     Hindi: "hi",
-    // Add more as needed
+
 };
 
 const PhraseList: React.FC = () => {
@@ -231,6 +231,7 @@ const PhraseList: React.FC = () => {
                     </IonSelect>
                     <IonButton
                         size="small"
+                        fill="clear"
                         disabled={translating === item._id}
                         onClick={() => handleTranslate(item, isRecording)}
                         className="translate-btn"
@@ -263,27 +264,32 @@ const PhraseList: React.FC = () => {
 
     return (
         <IonPage>
-            <IonHeader translucent>
-                <IonToolbar>
-                    <IonButtons slot="start">
-                        <IonButton onClick={() => history.push("/dashboard")} fill="clear">
-                            <IonIcon icon={arrowBack} slot="icon-only" />
-                        </IonButton>
-                    </IonButtons>
-                    <IonTitle>Phrase List & Recordings</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent fullscreen className="ion-padding phrase-list-bg">
-                <div className="phrase-list-container">
-                    {loading ? (
-                        <IonSpinner name="dots" className="loading-spinner" />
-                    ) : itemsToShow.length === 0 ? (
-                        <IonText color="medium" className="empty-msg">
-                            No phrases or recordings yet.
-                        </IonText>
-                    ) : (
-                        itemsToShow
-                    )}
+
+
+
+
+            <IonContent fullscreen className="phrase-list-bg">
+                <div className="phrase-list-card">
+                    <IonButton
+                        fill="clear"
+
+                        className="back-btn"
+                        onClick={() => history.push("/dashboard")}
+                    >
+                        <IonIcon icon={arrowBackOutline} slot="icon-only" />
+                    </IonButton>
+                    <IonText className="phrase-list-title">Phrase List & Recordings</IonText>
+                    <div className="phrase-list-container">
+                        {loading ? (
+                            <IonSpinner name="dots" className="loading-spinner" />
+                        ) : itemsToShow.length === 0 ? (
+                            <IonText color="medium" className="empty-msg">
+                                No phrases or recordings yet.
+                            </IonText>
+                        ) : (
+                            itemsToShow
+                        )}
+                    </div>
                 </div>
             </IonContent>
         </IonPage>

@@ -99,7 +99,7 @@ const ProfileSettings: React.FC = () => {
             <IonContent fullscreen className="profile-page">
                 <div className="profile-wrapper">
                     <IonButton fill="clear" className="back-btn" routerLink="/dashboard">
-                        <IonIcon icon={arrowBackOutline} />
+                        <IonIcon icon={arrowBackOutline} slot="icon-only" />
                     </IonButton>
 
                     <IonText className="profile-title">Profile &amp; Settings</IonText>

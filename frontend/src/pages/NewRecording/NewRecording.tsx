@@ -104,11 +104,11 @@ const NewRecording: React.FC = () => {
                         Record the speaker,<br />then extract the useful part
                     </IonText>
                     {recording ? (
-                        <IonButton expand="block" color="danger" onClick={stopRecording} className="recording-btn">
+                        <IonButton expand="block" fill="clear" color="danger" onClick={stopRecording} className="recording-btn">
                             Stop Recording
                         </IonButton>
                     ) : (
-                        <IonButton expand="block" onClick={startRecording} className="recording-btn">
+                        <IonButton expand="block" fill="clear" onClick={startRecording} className="recording-btn">
                             Start Recording
                         </IonButton>
                     )}

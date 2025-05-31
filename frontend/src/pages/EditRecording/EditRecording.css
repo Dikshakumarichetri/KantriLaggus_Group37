@@ -1,89 +1,116 @@
+:root {
+    --edit-bg-page: radial-gradient(circle at 65% 0%, #9798c8 0, #a18879 50%, #8f9e99 100%);
+    --edit-card-bg: radial-gradient(circle at 65% 0%, #e7e5e5 0, #d0d0cd 50%, #fefefd 100%);
+    --edit-shadow: 0 8px 36px 0 rgba(25, 40, 90, 0.13);
+    --edit-radius: 2rem;
+    --edit-text-main: #232851;
+    --edit-accent: #59698F;
+    --edit-btn-grad: linear-gradient(90deg, #4579F5 0%, #59698F 100%);
+    --edit-btn-grad-hover: linear-gradient(90deg, #59698F 0%, #8c9abb 100%);
+}
+
+/* Page background */
 .edit-recording-page {
-    --background: #232851;
+    --background: var(--edit-bg-page);
     min-height: 100vh;
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #232851;
-    margin: 0;
+    background: var(--edit-bg-page);
+    overflow-x: hidden;
+    overflow-y: auto;
     padding: 0;
+    margin: 0;
 }
 
+/* Card container */
 .edit-wrapper {
-    background: #202d55;
-    border-radius: 32px;
-    width: 370px;
-    min-height: 560px;
-    padding: 44px 36px 32px 36px;
-    box-shadow: 0 6px 32px 0 rgba(25, 40, 90, 0.16);
+    background: var(--edit-card-bg);
+    border-radius: var(--edit-radius);
+    width: 100%;
+    max-width: 400px;
+    box-shadow: var(--edit-shadow);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    color: #fff;
-    font-family: 'Inter', sans-serif;
+    color: var(--edit-text-main);
+    font-family: 'Inter', 'Poppins', sans-serif;
     position: relative;
-    margin: auto;
-    transition: box-shadow 0.3s, width 0.16s, padding 0.18s, border-radius 0.18s;
+    margin: 56px auto 60px auto;
+    padding: 44px 24px 34px 24px;
+    transition: box-shadow 0.21s;
 }
 
 /* Back button */
 .back-btn {
     position: absolute;
-    top: 24px;
-    left: 24px;
-    background: rgba(255, 255, 255, 0.09) !important;
+    top: 22px;
+    left: 22px;
+    background: rgba(255, 255, 255, 0.89) !important;
     border-radius: 50%;
     min-width: 44px;
     height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #a6bfff;
-    font-size: 2rem;
-    --box-shadow: none;
+    color: var(--edit-accent) !important;
+    font-size: 1.35rem;
     z-index: 2;
-    border: none;
-    transition: background 0.14s, color 0.14s;
+    border: 1.5px solid #ebecf1;
+    box-shadow: 0 2px 10px 0 rgba(60, 79, 149, 0.12);
+    transition: background 0.14s, color 0.14s, box-shadow 0.18s, border 0.14s;
 }
 
-.back-btn:hover {
-    background: #2b3a6f !important;
-    color: #fff;
+.back-btn:hover,
+.back-btn:focus {
+    background: #e7eaf8 !important;
+    color: #1d224b !important;
+    box-shadow: 0 6px 22px 0 rgba(60, 79, 149, 0.18);
+    border: 1.5px solid #bdc3e8;
+}
+
+.back-btn ion-icon {
+    font-size: 1.6rem;
+    color: var(--edit-accent);
 }
 
 /* Title */
 .edit-title {
-    font-size: 2rem;
+    font-size: 1.42rem;
     font-weight: 700;
-    margin-top: 56px;
-    margin-bottom: 24px;
-    letter-spacing: 0.5px;
-    color: #fff;
+    margin-top: 36px;
+    margin-bottom: 22px;
+    letter-spacing: 0.4px;
+    color: var(--edit-text-main);
     width: 100%;
+    font-family: inherit;
 }
 
 /* Audio player */
 .edit-audio {
     width: 100%;
     margin: 12px 0 24px 0;
-    background: #253A80;
+    background: #f3f5fc;
     border-radius: 10px;
     outline: none;
+    min-height: 36px;
 }
 
+/* Range selectors */
 .range-group {
     width: 100%;
     margin-bottom: 18px;
 }
 
 .range-group ion-text {
-    color: #b4b9e6;
+    color: #1d213c;
     font-size: 1rem;
     margin-bottom: 8px;
     display: block;
     text-align: left;
+    font-family: inherit;
 }
 
 .range-group ion-range {
@@ -92,55 +119,64 @@
     --knob-background: #fff;
     --pin-background: #59698f;
     --pin-color: #fff;
-    margin-bottom: 16px;
-    height: 38px;
+    margin-bottom: 14px;
+    height: 36px;
 }
 
 /* Buttons */
 .trim-btn,
 .save-btn {
-    background: linear-gradient(90deg, #4579F5 0%, #59698F 100%);
+    background: var(--edit-btn-grad);
     color: #fff;
-    border-radius: 14px;
-    font-family: 'Inter', sans-serif;
+    border-radius: 1.3rem;
+    font-family: inherit;
     font-weight: 600;
-    font-size: 1.12rem;
+    font-size: 1.08rem;
     padding: 14px 0;
-    margin-top: 6px;
-    margin-bottom: 10px;
+    margin-top: 8px;
+    margin-bottom: 9px;
     width: 100%;
     max-width: 220px;
     border: none;
-    box-shadow: 0 2px 10px 0 rgba(69, 121, 245, 0.10);
-    transition: background 0.22s, box-shadow 0.22s;
-    letter-spacing: 0.5px;
+    box-shadow: 0 2px 10px 0 rgba(69, 121, 245, 0.09);
+    transition: background 0.18s, box-shadow 0.18s;
+    letter-spacing: 0.4px;
 }
 
 .trim-btn:hover,
 .save-btn:hover {
-    background: linear-gradient(90deg, #59698F 0%, #4579F5 100%);
-    box-shadow: 0 6px 24px 0 rgba(69, 121, 245, 0.18);
+    background: var(--edit-btn-grad-hover);
+    box-shadow: 0 6px 18px 0 rgba(69, 121, 245, 0.14);
 }
+
+/* Success/Fail message */
+.ion-text-success,
+.ion-text-danger {
+    margin-top: 10px;
+    font-size: 1.07rem;
+    display: block;
+}
+
 
 .edit-wrapper>div[style] {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 22px;
     text-align: center;
 }
 
 .edit-wrapper audio[controls] {
     width: 100%;
     margin-top: 10px;
-    background: #253A80;
+    background: #f3f5fc;
     border-radius: 8px;
 }
 
-/* Success/Fail message */
-.ion-text-success,
-.ion-text-danger {
-    margin-top: 8px;
-    font-size: 1.08rem;
-    display: block;
+/* Loading message */
+.edit-wrapper .loading-message {
+    margin: 32px auto;
+    color: #9cbcff;
+    font-size: 1.12rem;
+    font-weight: 500;
 }
 
 /* RESPONSIVE MOBILE/TABLET */
@@ -148,23 +184,20 @@
     .edit-recording-page {
         align-items: flex-start;
         justify-content: flex-start;
-        padding-top: 5vw;
+        padding-top: 4vw;
     }
 
     .edit-wrapper {
-        width: 99vw;
-        min-width: 0;
         max-width: 99vw;
-        min-height: 420px;
-        padding: 16vw 4vw 7vw 4vw;
-        border-radius: 19px;
-        margin: 0;
+        padding: 14vw 4vw 7vw 4vw;
+        border-radius: 1.1rem;
+        margin: 0 auto 14vw auto;
     }
 
     .edit-title {
-        font-size: 1.18rem;
-        margin-top: 26px;
-        margin-bottom: 12px;
+        font-size: 1.09rem;
+        margin-top: 22px;
+        margin-bottom: 9px;
     }
 
     .edit-audio,
@@ -176,33 +209,36 @@
     .trim-btn,
     .save-btn {
         max-width: 99vw;
-        font-size: 1.04rem;
+        font-size: 1rem;
         padding: 13px 0;
     }
 
     .back-btn {
         top: 11px;
         left: 11px;
-        min-width: 36px;
-        height: 36px;
-        font-size: 1.41rem;
+        min-width: 35px;
+        height: 35px;
+        font-size: 1.22rem;
     }
 
     .range-group ion-text {
-        font-size: 0.98rem;
+        font-size: 0.95rem;
     }
 }
 
-/* Tiny screens */
 @media (max-width: 400px) {
     .edit-wrapper {
-        padding: 7vw 2vw 4vw 2vw;
-        border-radius: 11px;
+        padding: 5vw 1vw 4vw 1vw;
+        border-radius: 9px;
     }
 
     .back-btn {
-        min-width: 30px;
-        height: 30px;
-        font-size: 1.1rem;
+        min-width: 28px;
+        height: 28px;
+        font-size: 1rem;
+    }
+
+    .edit-title {
+        font-size: 0.95rem;
     }
 }
