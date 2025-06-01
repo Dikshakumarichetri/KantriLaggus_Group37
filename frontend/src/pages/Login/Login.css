@@ -31,7 +31,7 @@
 }
 
 .login-container {
-    background: radial-gradient(circle at 65% 0%, #e7e5e5 0, #d0d0cd 50%, #fefefd 100%);
+
     border-radius: var(--card-radius);
     width: 100%;
     max-width: 410px;

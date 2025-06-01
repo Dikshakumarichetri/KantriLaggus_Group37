@@ -19,6 +19,16 @@
 
 }
 
+.lang-select,
+.lang-select .select-text,
+.lang-select .select-placeholder,
+.lang-select .select-interface-option,
+ion-select.lang-select,
+ion-select.lang-select .select-text {
+    color: #232851 !important;
+    background: #fff !important;
+}
+
 .profile-wrapper {
     background: var(--profile-card);
     border-radius: var(--profile-radius);

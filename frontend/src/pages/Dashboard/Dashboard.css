@@ -1,6 +1,6 @@
 :root {
     --bg-page: radial-gradient(circle at 65% 0%, #9798c8 0, #a18879 50%, #8f9e99 100%);
-    --bg-card: radial-gradient(circle at 65% 0%, #e7e5e5 0, #d0d0cd 50%, #fefefd 100%);
+
     --color-text: #232851;
     --color-nav-text: #232851;
     --card-radius: 32px;
@@ -23,7 +23,7 @@
 }
 
 .dashboard-card {
-    background: var(--bg-card);
+
     border-radius: var(--card-radius);
     box-shadow: var(--shadow-light);
     width: 100%;

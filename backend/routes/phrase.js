@@ -3,41 +3,14 @@ const router = express.Router();
 const Phrase = require('../models/Phrase');
 const auth = require('../middleware/auth');
 
-// Get all phrases for current user
-router.get('/', auth, async (req, res) => {
-    try {
-        const phrases = await Phrase.find({ user: req.user.id }).sort({ date: -1 });
-        res.json(phrases);
-    } catch (err) {
-        res.status(500).json({ error: 'Server error' });
-    }
-});
+const fs = require('fs');
+const path = require('path');
 
-// Create new phrase (translation)
-router.post('/', auth, async (req, res) => {
-    try {
-        const { filename, translation, language } = req.body;
-        if (!filename || !translation) return res.status(400).json({ error: 'Missing fields' });
-        const phrase = new Phrase({ user: req.user.id, filename, translation, language });
-        await phrase.save();
-        res.json(phrase);
-    } catch (err) {
-        res.status(500).json({ error: 'Server error' });
-    }
-});
-
-// Delete a phrase
-router.delete('/:id', auth, async (req, res) => {
-    try {
-        const phrase = await Phrase.findOneAndDelete({ _id: req.params.id, user: req.user.id });
-        if (!phrase) return res.status(404).json({ error: 'Not found' });
-        res.json({ success: true });
-    } catch (err) {
-        res.status(500).json({ error: 'Server error' });
-    }
-});
-const { execFile } = require('child_process');
-const translate = require('@vitalets/google-translate-api');
+// --- GOOGLE CLOUD SETUP ---
+const speech = require('@google-cloud/speech').v1p1beta1;
+const { Translate } = require('@google-cloud/translate').v2;
+const speechClient = new speech.SpeechClient();
+const translate = new Translate();
 
 // POST /api/phrases/transcribe
 router.post('/transcribe', auth, async (req, res) => {
@@ -47,46 +20,61 @@ router.post('/transcribe', auth, async (req, res) => {
             return res.status(400).json({ error: 'Missing fields' });
         }
 
-        // Step 1: Transcribe using Whisper (via your Python script)
-        execFile(
-            'python3',
-            ['./transcribe_whisper.py', filename, sourceLanguage],
-            async (error, stdout, stderr) => {
-                if (error) {
-                    console.error('Whisper error:', stderr);
-                    return res.status(500).json({ error: 'Whisper failed' });
-                }
-                const transcript = stdout.trim();
+        // 1. Locate uploaded audio file (should be in recordings/)
+        const audioFilePath = path.join(__dirname, '..', 'recordings', filename);
+        if (!fs.existsSync(audioFilePath)) {
+            return res.status(404).json({ error: 'Audio file not found' });
+        }
 
-                // Step 2: Translate using google-translate-api if needed
-                let finalTranscript = transcript;
-                // Map language names to ISO codes
-                const langCodeMap = {
-                    English: 'en',
-                    Nepali: 'ne',
-                    Hindi: 'hi',
-                    // Add more as needed
-                };
-                const from = langCodeMap[sourceLanguage] || sourceLanguage.slice(0, 2).toLowerCase();
-                const to = langCodeMap[targetLanguage] || targetLanguage.slice(0, 2).toLowerCase();
+        // 2. Read audio and prepare config for Google Speech-to-Text
+        const audioBytes = fs.readFileSync(audioFilePath).toString('base64');
 
-                if (from !== to && transcript.length > 0) {
-                    try {
-                        const result = await translate(transcript, { from, to });
-                        finalTranscript = result.text;
-                    } catch (e) {
-                        console.error('Translation error:', e);
-                        finalTranscript = transcript; // fallback to original
-                    }
-                }
+        // Map language codes to Google BCP-47
+        const speechLangMap = {
+            en: 'en-US',
+            hi: 'hi-IN',
+            ne: 'ne-NP'
+        };
+        const speechLang = speechLangMap[sourceLanguage] || 'en-US';
+        const translateFrom = sourceLanguage || 'en';
+        const translateTo = targetLanguage || 'en';
 
-                // Step 3: Return transcript (translated or original)
-                res.json({ transcript: finalTranscript });
+        const request = {
+            audio: { content: audioBytes },
+            config: {
+                encoding: 'WEBM_OPUS',
+                sampleRateHertz: 48000,
+                languageCode: speechLang,
+                enableAutomaticPunctuation: true
+            },
+        };
+
+        // 3. Transcribe speech to text
+        const [response] = await speechClient.recognize(request);
+        const transcript = (response.results?.map(r => r.alternatives[0].transcript).join(' ').trim()) || '';
+
+        if (!transcript) {
+            return res.json({ transcript: '' });
+        }
+
+        // 4. Translate if needed
+        let finalTranscript = transcript;
+        if (translateFrom !== translateTo) {
+            try {
+                const [translation] = await translate.translate(transcript, { from: translateFrom, to: translateTo });
+                finalTranscript = translation;
+            } catch (err) {
+                console.error('Translation failed:', err);
             }
-        );
+        }
+
+        // 5. Return the translated transcript
+        res.json({ transcript: finalTranscript });
+
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error' });
     }
 });
+
 module.exports = router;

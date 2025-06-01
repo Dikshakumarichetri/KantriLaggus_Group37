@@ -11,8 +11,17 @@ import {
 import { useHistory } from 'react-router-dom';
 import './Signup.css';
 
-// API endpoint for user signup; change this URL if switching to login or other auth endpoints
-const API_URL = 'http://localhost:3001/api/auth/register';;
+const API_URL = 'http://localhost:3001/api/auth/register';
+
+const LANGUAGE_OPTIONS = [
+    { label: "English", value: "en" },
+    { label: "Spanish", value: "es" },
+    { label: "French", value: "fr" },
+    { label: "German", value: "de" },
+    { label: "Hindi", value: "hi" },
+    { label: "Nepali", value: "ne" }
+];
+
 const Signup: React.FC = () => {
     const [phone, setPhone] = useState('');
     const [name, setName] = useState('');
@@ -38,24 +47,19 @@ const Signup: React.FC = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                // Surface backend error message clearly
                 setError(data.error || data.message || 'Signup failed. Please check your details and try again.');
                 setLoading(false);
                 return;
             }
 
-            // Handle cases where backend returns token and/or user data
-            if (data.token) {
-                localStorage.setItem('authToken', data.token);
-            }
+            // Save language code (not label)
+            if (data.token) localStorage.setItem('authToken', data.token);
             if (data.user) {
                 localStorage.setItem('userProfile', JSON.stringify(data.user));
             } else {
-                // If no user object returned, save the submitted data as fallback
                 localStorage.setItem('userProfile', JSON.stringify({ phone, name, language }));
             }
 
-            // Redirect to dashboard after successful signup
             history.replace('/dashboard');
         } catch (err: any) {
             setError('Network error. Please try again.');
@@ -93,12 +97,9 @@ const Signup: React.FC = () => {
                         className="input-field"
                         onIonChange={e => setLanguage(e.detail.value!)}
                     >
-                        <IonSelectOption value="English">English</IonSelectOption>
-                        <IonSelectOption value="Spanish">Spanish</IonSelectOption>
-                        <IonSelectOption value="French">French</IonSelectOption>
-                        <IonSelectOption value="German">German</IonSelectOption>
-                        <IonSelectOption value="Hindi">Hindi</IonSelectOption>
-                        <IonSelectOption value="Nepali">Nepali</IonSelectOption>
+                        {LANGUAGE_OPTIONS.map(opt => (
+                            <IonSelectOption key={opt.value} value={opt.value}>{opt.label}</IonSelectOption>
+                        ))}
                     </IonSelect>
 
                     <IonButton

@@ -1,6 +1,6 @@
 :root {
     --library-bg-page: radial-gradient(circle at 65% 0%, #9798c8 0, #a18879 50%, #8f9e99 100%);
-    --library-card-bg: radial-gradient(circle at 65% 0%, #e7e5e5 0, #d0d0cd 50%, #fefefd 100%);
+    /* --library-card-bg: radial-gradient(circle at 65% 0%, #e7e5e5 0, #d0d0cd 50%, #fefefd 100%); */
     --library-shadow: 0 8px 36px 0 rgba(25, 40, 90, 0.13);
     --library-radius: 2.1rem;
     --library-text-main: #232851;
@@ -28,11 +28,11 @@
 
 /* 2. Card container */
 .library-container {
-    background: var(--library-card-bg);
-    border-radius: var(--library-radius);
+    /* background: var(--library-card-bg); */
+    /* border-radius: var(--library-radius); */
     width: 100%;
     max-width: 400px;
-    box-shadow: var(--library-shadow);
+    /* box-shadow: var(--library-shadow); */
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -38,3 +38,6 @@ build/
 node_modules/
 recordings/
 .webm
+
+
+keys/google-service-account.json

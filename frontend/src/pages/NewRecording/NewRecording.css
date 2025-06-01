@@ -1,6 +1,6 @@
 :root {
     --recording-bg-page: radial-gradient(circle at 65% 0%, #9798c8 0, #a18879 50%, #8f9e99 100%);
-    --recording-card-bg: radial-gradient(circle at 65% 0%, #e7e5e5 0, #d0d0cd 50%, #fefefd 100%);
+    /* --recording-card-bg: radial-gradient(circle at 65% 0%, #e7e5e5 0, #d0d0cd 50%, #fefefd 100%); */
     --recording-shadow: 0 8px 36px 0 rgba(25, 40, 90, 0.13);
     --recording-radius: 2.1rem;
     --recording-text-main: #232851;
@@ -26,12 +26,12 @@
 
 /* Card Style Container */
 .recording-container {
-    background: var(--recording-card-bg);
-    border-radius: var(--recording-radius);
+    /* background: var(--recording-card-bg); */
+    /* border-radius: var(--recording-radius); */
     width: 100%;
     max-width: 400px;
     min-height: 540px;
-    box-shadow: var(--recording-shadow);
+    /* box-shadow: var(--recording-shadow); */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -119,7 +119,7 @@
 /* Instruction */
 .recording-instruction {
     font-size: 1.05rem;
-    color: #7a7a89;
+    color: #080809;
     margin-bottom: 21px;
     font-weight: 500;
     line-height: 1.5;

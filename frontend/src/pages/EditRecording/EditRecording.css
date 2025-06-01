@@ -1,6 +1,6 @@
 :root {
     --edit-bg-page: radial-gradient(circle at 65% 0%, #9798c8 0, #a18879 50%, #8f9e99 100%);
-    --edit-card-bg: radial-gradient(circle at 65% 0%, #e7e5e5 0, #d0d0cd 50%, #fefefd 100%);
+    /* --edit-card-bg: radial-gradient(circle at 65% 0%, #e7e5e5 0, #d0d0cd 50%, #fefefd 100%); */
     --edit-shadow: 0 8px 36px 0 rgba(25, 40, 90, 0.13);
     --edit-radius: 2rem;
     --edit-text-main: #232851;
@@ -26,11 +26,11 @@
 
 /* Card container */
 .edit-wrapper {
-    background: var(--edit-card-bg);
-    border-radius: var(--edit-radius);
+    /* background: var(--edit-card-bg); */
+    /* border-radius: var(--edit-radius); */
     width: 100%;
     max-width: 400px;
-    box-shadow: var(--edit-shadow);
+    /* box-shadow: var(--edit-shadow); */
     display: flex;
     flex-direction: column;
     align-items: center;

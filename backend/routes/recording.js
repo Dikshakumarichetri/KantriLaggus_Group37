@@ -64,7 +64,6 @@ router.delete('/:id', auth, async (req, res) => {
     }
 });
 
-// (Optional) Update metadata
 router.patch('/:id', auth, async (req, res) => {
     try {
         const { filename } = req.body;

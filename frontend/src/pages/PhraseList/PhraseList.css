@@ -1,6 +1,6 @@
 :root {
     --phrase-bg-page: radial-gradient(circle at 65% 0%, #9798c8 0, #a18879 50%, #8f9e99 100%) !important;
-    --phrase-card-bg: radial-gradient(circle at 65% 0%, #e7e5e5 0, #d0d0cd 50%, #fefefd 100%);
+
     --phrase-shadow: 0 8px 36px 0 rgba(25, 40, 90, 0.14);
     --phrase-radius: 2rem;
     --phrase-text-main: #232851;
@@ -22,12 +22,12 @@
 }
 
 .phrase-list-card {
-    background: var(--phrase-card-bg);
-    border-radius: var(--phrase-radius);
+
+
     max-width: 440px;
     width: 97vw;
     min-height: 620px;
-    box-shadow: var(--phrase-shadow);
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -42,7 +42,6 @@
     top: 22px;
     left: 22px;
     background: rgba(239, 224, 224, 0.88) !important;
-
     color: #232851 !important;
     font-size: 1.8rem !important;
     border-radius: 50%;
@@ -82,15 +81,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 20px;
+    gap: 10px;
 }
 
 .phrase-card {
-    margin-bottom: 28px;
     border-radius: var(--phrase-radius);
     box-shadow: var(--phrase-shadow);
     width: 100%;
     background: var(--phrase-card-bg);
-    padding: 12px 22px 12px 22px;
+    padding: 12px 22px;
     transition: box-shadow 0.2s, transform 0.18s;
     border: none;
     display: flex;
@@ -135,12 +135,19 @@
 
 .phrase-content {
     font-size: 1.07rem;
-    color: #243366;
+    color: #030406;
     padding-bottom: 8px;
     font-family: 'Inter', 'Poppins', sans-serif;
     min-height: 36px;
     margin-top: 4px;
     word-break: break-word;
+}
+
+.recording-translation {
+    color: #232851;
+    font-weight: 500;
+    font-size: 1.1rem;
+    letter-spacing: 0.01em;
 }
 
 .lang-select {
@@ -212,7 +219,7 @@
     font-weight: 600;
     text-align: center;
     margin-top: 52px;
-    color: #b1b7c3;
+    color: #1f1f20;
 }
 
 .loading-spinner {
@@ -223,26 +230,53 @@
 /* Responsive Design */
 @media (max-width: 700px) {
     .phrase-list-card {
-        max-width: 99vw;
-        padding: 24px 3vw 20px 3vw;
-        border-radius: 18px;
+        max-width: 100vw;
+        min-width: 0;
+        padding: 12px 1vw 18px 1vw;
+        border-radius: 15px;
         min-height: 0;
+        margin-top: 22px;
     }
 
     .phrase-list-title {
-        font-size: 1.18rem;
-        margin-top: 24px;
+        font-size: 1.09rem;
+        margin-top: 12px;
+        margin-bottom: 18px;
+    }
+
+    .phrase-list-container {
+        padding-bottom: 20px;
+        gap: 10px;
     }
 
     .phrase-card {
-        width: 99vw;
-        padding: 12px 2vw 12px 2vw;
+        width: 100vw;
+        padding: 8px 0 8px 0;
+        border-radius: 13px;
+    }
+
+    .back-btn {
+        top: 8px;
+        left: 10px;
+        min-width: 36px;
+        height: 36px;
+        font-size: 1.15rem;
+        border-radius: 44%;
     }
 }
 
 @media (max-width: 430px) {
     .phrase-list-card {
-        padding: 9px 1vw 11px 1vw;
-        border-radius: 11px;
+        padding: 4px 0.2vw 7px 0.2vw;
+        border-radius: 7px;
+    }
+
+    .phrase-list-container {
+        padding-bottom: 20px;
+        gap: 10px;
+    }
+
+    .phrase-card {
+        border-radius: 7px;
     }
 }
