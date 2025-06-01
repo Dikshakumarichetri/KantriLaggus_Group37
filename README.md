@@ -129,3 +129,35 @@ An action looks at the JWT and confirms ownership to stop access by unauthorized
 Reading readings aloud and have them transcribed and translated by H.
 
 If transcription or translation is requested through the frontend, the backend can handle it (when local or external APIs are set up) or safely route it to a third-party service. The frontend gets the transcript and/or translation as a new phrase after the ASR (Automatic Speech Recognition) process.
+
+## 7. Translation System Overview
+
+Our application  uses the Google Cloud Translation API for handling audio-to-text translation.
+
+### ⚙️ How It Works
+	1.	🎙️ User records audio via the frontend.
+	2.	📤 Audio file is sent to the backend for processing.
+	3.	🔁 Backend:
+	•	Sends audio to Google Speech-to-Text API (for transcription).
+	•	Translates transcribed text using Google Cloud Translation API into the user’s selected language.
+	4.	📄 Translated text is saved and returned to the frontend.
+
+⸻
+
+### 🧰 Requirements
+	•	A Google Cloud Project with:
+	•	Speech-to-Text API enabled
+	•	Cloud Translation API enabled
+	•	A valid Service Account JSON key file (used in the backend).
+	•	Environment variable setup in .env:
+
+	```
+	GOOGLE_APPLICATION_CREDENTIALS=path/to/your-service-account-key.json
+	```
+### 📦 Dependencies
+
+Make sure the backend has these packages installed:
+
+```
+npm install @google-cloud/speech @google-cloud/translate
+```
