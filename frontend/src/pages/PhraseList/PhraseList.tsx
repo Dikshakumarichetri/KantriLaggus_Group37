@@ -10,9 +10,10 @@ import {
     IonSelectOption,
     useIonToast
 } from "@ionic/react";
-import { arrowBackOutline, micOutline, trashOutline } from "ionicons/icons";
+import { arrowBackOutline, trashOutline } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import "./PhraseList.css";
+import ProfileIcon from "../../components/ProfileIcon/ProfileIcon";
 
 const API_URL = "http://localhost:3001";
 const LANGUAGE_OPTIONS = [
@@ -134,6 +135,7 @@ const PhraseList: React.FC = () => {
                     >
                         <IonIcon icon={arrowBackOutline} slot="icon-only" />
                     </IonButton>
+                    <ProfileIcon />
                     <IonText className="phrase-list-title">My PhraseList</IonText>
                     <div className="phrase-list-container">
                         {loading ? (
@@ -172,10 +174,11 @@ const PhraseList: React.FC = () => {
                                                 disabled={translating === rec._id}
                                                 onClick={() => handleTranslate(rec)}
                                                 className="translate-btn"
-                                                style={{ marginLeft: 8 }}
+                                                style={{ marginTop: 10 }}
                                             >
-                                                <IonIcon icon={micOutline} size="small" color="light" slot="icon-only" />
-                                                {translating === rec._id && <IonSpinner name="dots" />}
+    {translating === rec._id ? <IonSpinner name="dots" /> : 'Translate'}
+
+                                                {/* {translating === rec._id && <IonSpinner name="dots" />} */}
                                             </IonButton>
                                         </div>
                                         {rec.translation && (

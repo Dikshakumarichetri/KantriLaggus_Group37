@@ -3,6 +3,7 @@ import { IonPage, IonContent, IonButton, IonText, IonIcon } from '@ionic/react';
 import { micOutline, libraryOutline } from 'ionicons/icons';
 import { useIonRouter } from '@ionic/react';
 import './NewRecording.css';
+import ProfileIcon from '../../components/ProfileIcon/ProfileIcon';
 
 const API_URL = 'http://localhost:3001';
 
@@ -92,9 +93,10 @@ const NewRecording: React.FC = () => {
                         <IonButton fill="clear" onClick={() => router.push('/dashboard')} className="nav-btn">
                             <span style={{ fontSize: "2rem", fontWeight: "bold" }}>&larr;</span>
                         </IonButton>
-                        <IonButton fill="clear" onClick={() => router.push('/recording-library')} className="nav-btn">
+                        {/* <IonButton fill="clear" onClick={() => router.push('/recording-library')} className="nav-btn">
                             <IonIcon icon={libraryOutline} />
-                        </IonButton>
+                        </IonButton> */}
+                         <ProfileIcon />
                     </div>
                     <IonText className="recording-title">New Recording</IonText>
                     <div className="recording-mic-wrapper">

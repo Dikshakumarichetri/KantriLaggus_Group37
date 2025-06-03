@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import {
-    IonPage, IonContent, IonText, IonSpinner, IonList, IonItem, IonButton, IonIcon, IonLabel
+    IonPage, IonContent, IonText, IonSpinner, IonButton, IonIcon
 } from '@ionic/react';
-import { arrowBackOutline, createOutline, trashOutline, downloadOutline, micOutline } from 'ionicons/icons';
+import { arrowBackOutline, createOutline, trashOutline, downloadOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import './RecordingLibrary.css';
+import ProfileIcon from '../../components/ProfileIcon/ProfileIcon';
 
 const API_URL = 'http://localhost:3001';
 
 const RecordingLibrary: React.FC = () => {
     const [recordings, setRecordings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const [translating, setTranslating] = useState<string | null>(null);
+    // const [translating, setTranslating] = useState<string | null>(null);
 
     const history = useHistory();
 
@@ -62,6 +63,7 @@ const RecordingLibrary: React.FC = () => {
                     <IonButton fill="clear" className="back-btn" onClick={() => history.push('/dashboard')}>
                         <IonIcon icon={arrowBackOutline} slot="icon-only" />
                     </IonButton>
+                    <ProfileIcon />
                     <IonText className="library-title">My Recordings</IonText>
                     {loading ? (
                         <IonSpinner name="dots" className="loading-spinner" />

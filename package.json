@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@google-cloud/speech": "^7.1.0",
+    "@google-cloud/translate": "^9.1.0",
+    "multer": "^2.0.0"
+  }
+}

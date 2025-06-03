@@ -39,5 +39,6 @@ node_modules/
 recordings/
 .webm
 
+/backend/keys/
 
 keys/google-service-account.json
