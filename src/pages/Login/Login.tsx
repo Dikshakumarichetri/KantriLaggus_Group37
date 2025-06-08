@@ -9,8 +9,6 @@ import {
 import { useHistory } from 'react-router-dom';
 import './Login.css';
 
-const API_URL = 'http://localhost:3001/api/auth/login';
-
 const Login: React.FC = () => {
     const [phone, setPhone] = useState('');
     const [error, setError] = useState('');
@@ -20,23 +18,16 @@ const Login: React.FC = () => {
     const handleLogin = async () => {
         setError('');
         setLoading(true);
+
         try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone })
-            });
-            if (!response.ok) {
-                const data = await response.json();
-                setError(data.error || 'Login failed');
-                setLoading(false);
-                return;
-            }
-            const data = await response.json();
-            // Store user profile and optional token
-            localStorage.setItem('userProfile', JSON.stringify(data.user || {}));
+            // ✅ Simulate user data creation in localStorage
+            const user = { phone, createdAt: new Date().toISOString() };
+
+            // Save to localStorage
+            localStorage.setItem('userProfile', JSON.stringify(user));
             localStorage.setItem('currentUserPhone', phone);
-            if (data.token) localStorage.setItem('token', data.token);
+            localStorage.setItem('token', 'mock-local-token'); // fake token if needed
+
             setLoading(false);
             history.replace('/dashboard');
         } catch (err: any) {

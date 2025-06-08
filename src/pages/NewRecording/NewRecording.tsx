@@ -1,36 +1,34 @@
 import React, { useState, useRef } from 'react';
 import { IonPage, IonContent, IonButton, IonText, IonIcon } from '@ionic/react';
-import { micOutline, libraryOutline } from 'ionicons/icons';
+import { micOutline } from 'ionicons/icons';
 import { useIonRouter } from '@ionic/react';
 import './NewRecording.css';
 import ProfileIcon from '../../components/ProfileIcon/ProfileIcon';
 
-const API_URL = 'http://localhost:3001';
-
 const NewRecording: React.FC = () => {
     const [recording, setRecording] = useState<MediaRecorder | null>(null);
     const [audioURL, setAudioURL] = useState<string | null>(null);
-    const [isUploading, setIsUploading] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
     const [message, setMessage] = useState('');
     const chunks = useRef<Blob[]>([]);
     const router = useIonRouter();
 
-    // Get auth token from localStorage
-    const authToken = localStorage.getItem('authToken');
-
     const startRecording = async () => {
         setMessage('');
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const mediaRecorder = new window.MediaRecorder(stream);
+        const mediaRecorder = new MediaRecorder(stream);
         chunks.current = [];
+
         mediaRecorder.ondataavailable = (e: BlobEvent) => {
             chunks.current.push(e.data);
         };
+
         mediaRecorder.onstop = () => {
             const blob = new Blob(chunks.current, { type: 'audio/webm' });
             setAudioURL(URL.createObjectURL(blob));
-            uploadAudio(blob);
+            saveRecordingLocally(blob);
         };
+
         setRecording(mediaRecorder);
         mediaRecorder.start();
     };
@@ -42,47 +40,28 @@ const NewRecording: React.FC = () => {
         }
     };
 
-    const uploadAudio = async (blob: Blob) => {
-        setIsUploading(true);
-        setMessage('Uploading...');
-        const formData = new FormData();
-        formData.append('audio', blob, `recording-${Date.now()}.webm`);
+    const saveRecordingLocally = (blob: Blob) => {
+        setIsSaving(true);
+        setMessage('Saving...');
 
-        try {
-            // 1. Upload audio file to backend
-            const response = await fetch(`${API_URL}/upload`, {
-                method: 'POST',
-                body: formData,
-            });
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64Audio = reader.result as string;
+            const existing = JSON.parse(localStorage.getItem('recordings') || '[]');
 
-            if (!response.ok) {
-                setMessage('Audio upload failed.');
-                setIsUploading(false);
-                return;
-            }
+            const newRecording = {
+                id: Date.now(),
+                filename: `recording-${Date.now()}.webm`,
+                audioData: base64Audio,
+                createdAt: new Date().toISOString()
+            };
 
-            const data = await response.json(); // <- THIS GIVES YOU THE TRUE FILENAME
-            setMessage('Audio uploaded. Saving to library...');
+            localStorage.setItem('recordings', JSON.stringify([...existing, newRecording]));
+            setMessage('Recording saved to library!');
+            setIsSaving(false);
+        };
 
-            // 2. Save recording metadata to MongoDB, use real backend filename
-            const saveMeta = await fetch(`${API_URL}/api/recordings`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`,
-                },
-                body: JSON.stringify({ filename: data.filename }), // <--
-            });
-
-            if (!saveMeta.ok) {
-                setMessage('Failed to save recording metadata.');
-            } else {
-                setMessage('Recording saved to library!');
-            }
-        } catch (error) {
-            setMessage('Error saving recording.');
-        }
-        setIsUploading(false);
+        reader.readAsDataURL(blob); // Convert blob to base64 string
     };
 
     return (
@@ -93,10 +72,7 @@ const NewRecording: React.FC = () => {
                         <IonButton fill="clear" onClick={() => router.push('/dashboard')} className="nav-btn">
                             <span style={{ fontSize: "2rem", fontWeight: "bold" }}>&larr;</span>
                         </IonButton>
-                        {/* <IonButton fill="clear" onClick={() => router.push('/recording-library')} className="nav-btn">
-                            <IonIcon icon={libraryOutline} />
-                        </IonButton> */}
-                         <ProfileIcon />
+                        <ProfileIcon />
                     </div>
                     <IonText className="recording-title">New Recording</IonText>
                     <div className="recording-mic-wrapper">
@@ -114,7 +90,7 @@ const NewRecording: React.FC = () => {
                             Start Recording
                         </IonButton>
                     )}
-                    {isUploading && <div className="recording-message">Saving...</div>}
+                    {isSaving && <div className="recording-message">Saving...</div>}
                     {message && <div className="recording-message">{message}</div>}
                     {audioURL && <audio controls src={audioURL} style={{ marginTop: 10 }} />}
                 </div>

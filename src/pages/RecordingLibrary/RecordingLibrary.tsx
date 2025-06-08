@@ -7,54 +7,39 @@ import { useHistory } from 'react-router-dom';
 import './RecordingLibrary.css';
 import ProfileIcon from '../../components/ProfileIcon/ProfileIcon';
 
-const API_URL = 'http://localhost:3001';
-
 const RecordingLibrary: React.FC = () => {
     const [recordings, setRecordings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    // const [translating, setTranslating] = useState<string | null>(null);
-
     const history = useHistory();
-
-    // Get auth token & user profile
-    const authToken = localStorage.getItem('authToken');
-    const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
-    const preferredLanguage = userProfile.language || 'English';
 
     useEffect(() => {
         setLoading(true);
-        fetch(`${API_URL}/api/recordings`, {
-            headers: { Authorization: `Bearer ${authToken}` }
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setRecordings(data);
-                setLoading(false);
-            })
-            .catch(() => setLoading(false));
-    }, [authToken]);
+        const stored = localStorage.getItem('recordings');
+        const parsed = stored ? JSON.parse(stored) : [];
+        setRecordings(parsed);
+        setLoading(false);
+    }, []);
 
     const handleEdit = (rec: any) => {
         history.push({
-            pathname: `/edit-recording/${rec._id}`,
+            pathname: `/edit-recording/${rec.id}`, // Use local ID (timestamp)
             state: { filename: rec.filename }
         });
     };
 
-    const handleDelete = async (recordingId: string) => {
+    const handleDelete = (recordingId: number) => {
         if (!window.confirm('Delete this recording?')) return;
-        const res = await fetch(`${API_URL}/api/recordings/${recordingId}`, {
-            method: 'DELETE',
-            headers: { Authorization: `Bearer ${authToken}` }
-        });
-        if (res.ok) {
-            setRecordings(recordings.filter((rec: any) => rec._id !== recordingId));
-        } else {
-            alert('Failed to delete file.');
-        }
+        const updated = recordings.filter((rec: any) => rec.id !== recordingId);
+        localStorage.setItem('recordings', JSON.stringify(updated));
+        setRecordings(updated);
     };
 
-
+    const downloadBase64 = (base64Data: string, filename: string) => {
+        const a = document.createElement('a');
+        a.href = base64Data;
+        a.download = filename;
+        a.click();
+    };
 
     return (
         <IonPage>
@@ -72,21 +57,26 @@ const RecordingLibrary: React.FC = () => {
                     ) : (
                         <div className="recording-list">
                             {recordings.map((rec, i) => (
-                                <div className="recording-item" key={rec._id}>
+                                <div className="recording-item" key={rec.id}>
                                     <div className="item-inner">
                                         <div className="recording-meta">
                                             <div className="recording-index">Recording {i + 1}</div>
                                             <div className="recording-name">{rec.filename}</div>
                                         </div>
-                                        <audio controls src={`${API_URL}/recordings/${rec.filename}`} className="recording-audio" />
+                                        <audio controls src={rec.audioData} className="recording-audio" />
                                         <div className="recording-actions">
                                             <IonButton fill="clear" size="small" className="edit-btn" onClick={() => handleEdit(rec)}>
                                                 <IonIcon icon={createOutline} size="small" color="light" slot="icon-only" />
                                             </IonButton>
-                                            <IonButton fill="clear" size="small" className="delete-btn" onClick={() => handleDelete(rec._id)}>
+                                            <IonButton fill="clear" size="small" className="delete-btn" onClick={() => handleDelete(rec.id)}>
                                                 <IonIcon icon={trashOutline} size="small" color="light" slot="icon-only" />
                                             </IonButton>
-                                            <IonButton fill="clear" size="small" className="download-btn" download={rec.filename} href={`${API_URL}/recordings/${rec.filename}`}>
+                                            <IonButton
+                                                fill="clear"
+                                                size="small"
+                                                className="download-btn"
+                                                onClick={() => downloadBase64(rec.audioData, rec.filename)}
+                                            >
                                                 <IonIcon icon={downloadOutline} size="small" color="light" slot="icon-only" />
                                             </IonButton>
                                         </div>
