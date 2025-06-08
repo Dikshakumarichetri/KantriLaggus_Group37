@@ -22,12 +22,9 @@
 }
 
 .phrase-list-card {
-
-
     max-width: 440px;
     width: 97vw;
     min-height: 620px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,6 +34,79 @@
     z-index: 2;
 }
 
+/* --- Pair Display --- */
+.pair-card {
+    background: #f7f7fc;
+    border-radius: 22px;
+    padding: 24px 18px 18px 18px;
+    margin: 38px auto 0 auto;
+    box-shadow: var(--phrase-shadow);
+    max-width: 480px;
+    width: 100%;
+    color: #030406;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+}
+
+.pair-audio-row {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+}
+
+.pair-label {
+    color: #59698f;
+    font-weight: 700;
+    font-size: 1.09rem;
+    margin-bottom: 3px;
+    letter-spacing: 0.03em;
+}
+
+.pair-audio-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #8a8fb3;
+    font-size: 0.99em;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.pair-filename {
+    font-weight: 600;
+    color: #232851;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 170px;
+}
+
+.pair-date {
+    color: #adb3ca;
+    font-size: 0.96em;
+    margin-left: 12px;
+}
+
+.pair-audio {
+    width: 100%;
+    border-radius: 10px;
+    background: #eaeaff;
+    margin-top: 2px;
+    margin-bottom: 5px;
+}
+
+.pair-card-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+    margin-top: 6px;
+}
+
+/* Rest of your PhraseList page styling… (kept as in your snippet) */
 .back-btn {
     position: absolute;
     top: 22px;
@@ -85,135 +155,6 @@
     gap: 10px;
 }
 
-.phrase-card {
-    border-radius: var(--phrase-radius);
-    box-shadow: var(--phrase-shadow);
-    width: 100%;
-    background: var(--phrase-card-bg);
-    padding: 12px 22px;
-    transition: box-shadow 0.2s, transform 0.18s;
-    border: none;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-}
-
-.phrase-card:hover {
-    box-shadow: 0 14px 38px 0 rgba(89, 105, 143, 0.22);
-    transform: translateY(-2px) scale(1.014);
-}
-
-.phrase-card-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 6px;
-}
-
-.phrase-filename {
-    font-size: 1.13rem;
-    font-weight: 700;
-    color: var(--phrase-text-main);
-    letter-spacing: 0.2px;
-}
-
-.phrase-lang {
-    font-size: 0.95rem;
-    color: var(--phrase-subtext);
-    margin-left: 9px;
-    font-weight: 600;
-}
-
-.phrase-date {
-    font-size: 0.92rem;
-    color: #9da5b7;
-    margin-left: auto;
-}
-
-.phrase-content {
-    font-size: 1.07rem;
-    color: #030406;
-    padding-bottom: 8px;
-    font-family: 'Inter', 'Poppins', sans-serif;
-    min-height: 36px;
-    margin-top: 4px;
-    word-break: break-word;
-}
-
-.recording-translation {
-    color: #232851;
-    font-weight: 500;
-    font-size: 1.1rem;
-    letter-spacing: 0.01em;
-}
-
-.lang-select {
-    width: 150px;
-    margin-top: 10px;
-    border-radius: 1.1rem;
-    --placeholder-color: #b0b5c9;
-    --background: #fff;
-    --color: #232851;
-    font-size: 0.99rem;
-    font-family: 'Inter', 'Poppins', sans-serif;
-    box-shadow: 0 2px 8px 0 rgba(60, 79, 149, 0.07);
-    border: 1.2px solid #e3e5ee;
-    transition: border 0.18s, box-shadow 0.22s, background 0.18s;
-}
-
-.translate-btn {
-    background: var(--phrase-btn-grad);
-    color: #fff;
-    border-radius: 1.4rem;
-    font-weight: 600;
-    font-size: 0.98em;
-    letter-spacing: 0.2px;
-    padding: 7px 20px;
-    margin-right: 7px;
-    border: none;
-    box-shadow: 0 2px 8px 0 rgba(69, 121, 245, 0.08);
-    transition: background 0.18s, box-shadow 0.18s, transform 0.16s;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.translate-btn:hover,
-.translate-btn:focus {
-    background: var(--phrase-btn-grad-hover);
-    color: #fff;
-    box-shadow: 0 6px 18px 0 rgba(69, 121, 245, 0.14);
-    transform: scale(1.045);
-}
-
-.delete-btn {
-    background: var(--phrase-delete-bg);
-    color: var(--phrase-delete-color);
-    border-radius: 1.4rem;
-    font-weight: 600;
-    font-size: 0.98em;
-    letter-spacing: 0.2px;
-    padding: 7px 20px;
-    border: none;
-    box-shadow: 0 2px 8px 0 rgba(255, 77, 77, 0.08);
-    transition: background 0.18s, box-shadow 0.18s, color 0.18s, transform 0.16s;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    margin-right: 0;
-}
-
-.delete-btn:hover,
-.delete-btn:focus {
-    background: #fdd7d7;
-    color: #c70000;
-    box-shadow: 0 6px 18px 0 rgba(255, 77, 77, 0.14);
-    transform: scale(1.045);
-}
-
 .empty-msg {
     font-size: 1.25rem;
     font-weight: 600;
@@ -227,7 +168,7 @@
     display: block;
 }
 
-/* Responsive Design */
+/* Responsive for mobile/tablet */
 @media (max-width: 700px) {
     .phrase-list-card {
         max-width: 100vw;
@@ -238,45 +179,18 @@
         margin-top: 22px;
     }
 
-    .phrase-list-title {
-        font-size: 1.09rem;
-        margin-top: 12px;
-        margin-bottom: 18px;
-    }
-
-    .phrase-list-container {
-        padding-bottom: 20px;
-        gap: 10px;
-    }
-
-    .phrase-card {
-        width: 100vw;
-        padding: 8px 0 8px 0;
+    .pair-card {
+        max-width: 99vw;
         border-radius: 13px;
-    }
-
-    .back-btn {
-        top: 8px;
-        left: 10px;
-        min-width: 36px;
-        height: 36px;
-        font-size: 1.15rem;
-        border-radius: 44%;
+        padding: 13px 8px 9px 8px;
     }
 }
 
 @media (max-width: 430px) {
-    .phrase-list-card {
+
+    .phrase-list-card,
+    .pair-card {
         padding: 4px 0.2vw 7px 0.2vw;
-        border-radius: 7px;
-    }
-
-    .phrase-list-container {
-        padding-bottom: 20px;
-        gap: 10px;
-    }
-
-    .phrase-card {
         border-radius: 7px;
     }
 }

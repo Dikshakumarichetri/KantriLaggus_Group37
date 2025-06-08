@@ -1,6 +1,5 @@
 :root {
     --edit-bg-page: radial-gradient(circle at 65% 0%, #9798c8 0, #a18879 50%, #8f9e99 100%);
-    /* --edit-card-bg: radial-gradient(circle at 65% 0%, #e7e5e5 0, #d0d0cd 50%, #fefefd 100%); */
     --edit-shadow: 0 8px 36px 0 rgba(25, 40, 90, 0.13);
     --edit-radius: 2rem;
     --edit-text-main: #232851;
@@ -26,11 +25,8 @@
 
 /* Card container */
 .edit-wrapper {
-    /* background: var(--edit-card-bg); */
-    /* border-radius: var(--edit-radius); */
     width: 100%;
     max-width: 400px;
-    /* box-shadow: var(--edit-shadow); */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,7 +39,6 @@
     transition: box-shadow 0.21s;
 }
 
-/* Back button */
 .back-btn {
     position: absolute;
     top: 22px;
@@ -76,7 +71,6 @@
     color: var(--edit-accent);
 }
 
-/* Title */
 .edit-title {
     font-size: 1.42rem;
     font-weight: 700;
@@ -88,7 +82,6 @@
     font-family: inherit;
 }
 
-/* Audio player */
 .edit-audio {
     width: 100%;
     margin: 12px 0 24px 0;
@@ -98,7 +91,6 @@
     min-height: 36px;
 }
 
-/* Range selectors */
 .range-group {
     width: 100%;
     margin-bottom: 18px;
@@ -123,8 +115,7 @@
     height: 36px;
 }
 
-/* Buttons */
-.edit-btn{
+.edit-btn {
     background: var(--phrase-btn-grad);
     color: #fff;
     border-radius: 1.4rem;
@@ -140,6 +131,7 @@
     align-items: center;
     gap: 5px;
 }
+
 .trim-btn,
 .save-btn {
     background: var(--edit-btn-grad);
@@ -165,14 +157,12 @@
     box-shadow: 0 6px 18px 0 rgba(69, 121, 245, 0.14);
 }
 
-/* Success/Fail message */
 .ion-text-success,
 .ion-text-danger {
     margin-top: 10px;
     font-size: 1.07rem;
     display: block;
 }
-
 
 .edit-wrapper>div[style] {
     width: 100%;
@@ -187,7 +177,6 @@
     border-radius: 8px;
 }
 
-/* Loading message */
 .edit-wrapper .loading-message {
     margin: 32px auto;
     color: #9cbcff;
@@ -195,7 +184,6 @@
     font-weight: 500;
 }
 
-/* RESPONSIVE MOBILE/TABLET */
 @media (max-width: 700px) {
     .edit-recording-page {
         align-items: flex-start;
