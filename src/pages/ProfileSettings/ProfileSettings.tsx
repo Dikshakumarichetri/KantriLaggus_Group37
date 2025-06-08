@@ -23,8 +23,8 @@ import {
     checkmarkOutline,
 } from 'ionicons/icons';
 import { useIonRouter } from '@ionic/react';
-
 import './ProfileSettings.css';
+import { Storage } from '@ionic/storage';
 
 const LANGUAGES = [
     { label: 'Nepali', code: 'ne' },
@@ -33,8 +33,10 @@ const LANGUAGES = [
     { label: 'Spanish', code: 'es' },
     { label: 'French', code: 'fr' },
     { label: 'Chinese', code: 'zh' }
-
 ];
+
+const storage = new Storage();
+storage.create();
 
 const ProfileSettings: React.FC = () => {
     const [userName, setUserName] = useState<string>('');
@@ -45,50 +47,39 @@ const ProfileSettings: React.FC = () => {
     const router = useIonRouter();
 
     useEffect(() => {
-        const stored = localStorage.getItem('userProfile');
-        if (stored) {
-            try {
-                const data = JSON.parse(stored);
-                setUserName(data.name ?? '');
-                setUserPhone(data.phone ?? '');
-                if (data.language) {
-                    setLanguage(data.language);
-                    const langObj = LANGUAGES.find(l => l.code === data.language);
+        const loadProfile = async () => {
+            const stored = await storage.get('userProfile');
+            if (stored) {
+                setUserName(stored.name ?? '');
+                setUserPhone(stored.phone ?? '');
+                if (stored.language) {
+                    setLanguage(stored.language);
+                    const langObj = LANGUAGES.find(l => l.code === stored.language);
                     setLanguageLabel(langObj?.label || 'English');
                 }
-            } catch (e) {
-                console.error('Failed to parse user data', e);
             }
-        }
+        };
+        loadProfile();
     }, []);
 
-    // Keep local language label up to date
     useEffect(() => {
         const langObj = LANGUAGES.find(l => l.code === language);
         setLanguageLabel(langObj?.label || 'English');
     }, [language]);
 
     const handleLogout = async () => {
-        localStorage.removeItem('userProfile');
-        localStorage.removeItem('currentUserPhone');
+        await storage.remove('userProfile');
+        await storage.remove('currentUserPhone');
         router.push('/login', 'root');
     };
 
-    // When user picks a new language
-    const handleSelectLanguage = (lang: { label: string; code: string }) => {
+    const handleSelectLanguage = async (lang: { label: string; code: string }) => {
         setLanguage(lang.code);
         setLanguageLabel(lang.label);
 
-        // Save to userProfile in localStorage
-        const stored = localStorage.getItem('userProfile');
-        let data = {};
-        if (stored) {
-            try {
-                data = JSON.parse(stored);
-            } catch { }
-        }
-        const newProfile = { ...data, language: lang.code };
-        localStorage.setItem('userProfile', JSON.stringify(newProfile));
+        const stored = await storage.get('userProfile') || {};
+        const newProfile = { ...stored, language: lang.code };
+        await storage.set('userProfile', newProfile);
         setShowLangModal(false);
     };
 
@@ -132,7 +123,6 @@ const ProfileSettings: React.FC = () => {
                         </IonButton>
                     </div>
 
-                    {/* Language Selection Modal */}
                     <IonModal isOpen={showLangModal} onDidDismiss={() => setShowLangModal(false)}>
                         <IonHeader>
                             <IonToolbar>

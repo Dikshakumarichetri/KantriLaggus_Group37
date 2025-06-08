@@ -2,8 +2,12 @@ import React from 'react';
 import { IonPage, IonContent, IonText } from '@ionic/react';
 import ProfileIcon from '../../components/ProfileIcon/ProfileIcon';
 import './Dashboard.css';
+import { Storage } from '@ionic/storage';
 
 const Dashboard: React.FC = () => {
+    const storage = new Storage();
+    storage.create();
+
     return (
         <IonPage>
             <IonContent fullscreen className="dashboard-page">
@@ -22,7 +26,6 @@ const Dashboard: React.FC = () => {
                         <div className="dashboard-nav-item" tabIndex={0} onClick={() => window.location.href = '/recording-library'}>
                             <IonText className="dashboard-nav-text">Recordings Library</IonText>
                         </div>
-
                     </div>
                 </div>
             </IonContent>

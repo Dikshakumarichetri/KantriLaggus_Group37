@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-    IonPage, IonContent, IonButton, IonIcon, IonRange, IonText, IonInput
+    IonPage, IonContent, IonButton, IonIcon, IonRange, IonText, IonInput, useIonToast
 } from '@ionic/react';
 import { arrowBackOutline } from 'ionicons/icons';
 import { useHistory, useParams } from 'react-router-dom';
 import './EditRecording.css';
 import ProfileIcon from '../../components/ProfileIcon/ProfileIcon';
+import { Storage } from '@ionic/storage';
+
+const storage = new Storage();
+storage.create();
 
 const EditRecording: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -16,16 +20,20 @@ const EditRecording: React.FC = () => {
     const [sourcePhrase, setSourcePhrase] = useState({ label: '', start: 0, end: 0 });
     const [targetPhrase, setTargetPhrase] = useState({ label: '', start: 0, end: 0 });
     const [message, setMessage] = useState('');
+    const [present] = useIonToast();
 
     useEffect(() => {
-        const stored = localStorage.getItem('recordings');
-        const parsed = stored ? JSON.parse(stored) : [];
-        const match = parsed.find((r: any) => String(r.id) === id);
-        if (!match) {
-            setMessage('Recording not found.');
-            return;
-        }
-        setRecording(match);
+        const fetchRecording = async () => {
+            const stored = await storage.get('recordings');
+            const parsed = stored ? JSON.parse(stored) : [];
+            const match = parsed.find((r: any) => String(r.id) === id);
+            if (!match) {
+                setMessage('Recording not found.');
+                return;
+            }
+            setRecording(match);
+        };
+        fetchRecording();
     }, [id]);
 
     useEffect(() => {
@@ -71,6 +79,28 @@ const EditRecording: React.FC = () => {
             console.error(err);
             setMessage("Failed to preview segment: " + err.message);
         }
+    };
+
+    const saveTrimmedPhrases = async () => {
+        if (!sourcePhrase.label || !targetPhrase.label) {
+            present({ message: 'Please label and mark both phrases before saving.', duration: 1800, color: 'danger' });
+            return;
+        }
+
+        const updated = {
+            ...recording,
+            sourcePhrase,
+            targetPhrase,
+            date: new Date().toISOString()
+        };
+
+        const stored = await storage.get('recordings');
+        const parsed = stored ? JSON.parse(stored) : [];
+        const updatedList = parsed.map((r: any) => r.id === updated.id ? updated : r);
+        await storage.set('recordings', JSON.stringify(updatedList));
+
+        present({ message: 'Phrases saved!', duration: 1500, color: 'success' });
+        history.push('/phraselist');
     };
 
     return (
@@ -123,6 +153,10 @@ const EditRecording: React.FC = () => {
                             </IonButton>
                         </div>
                     ))}
+
+                    <IonButton expand="block" onClick={saveTrimmedPhrases} style={{ marginTop: 24 }}>
+                        💾 Save Both Phrases
+                    </IonButton>
 
                     {message && (
                         <IonText color="danger" style={{ display: 'block', marginTop: '16px' }}>{message}</IonText>

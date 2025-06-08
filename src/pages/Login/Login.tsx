@@ -8,6 +8,10 @@ import {
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import './Login.css';
+import { Storage } from '@ionic/storage';
+
+const storage = new Storage();
+storage.create();
 
 const Login: React.FC = () => {
     const [phone, setPhone] = useState('');
@@ -20,13 +24,11 @@ const Login: React.FC = () => {
         setLoading(true);
 
         try {
-            // ✅ Simulate user data creation in localStorage
             const user = { phone, createdAt: new Date().toISOString() };
 
-            // Save to localStorage
-            localStorage.setItem('userProfile', JSON.stringify(user));
-            localStorage.setItem('currentUserPhone', phone);
-            localStorage.setItem('token', 'mock-local-token'); // fake token if needed
+            await storage.set('userProfile', user);
+            await storage.set('currentUserPhone', phone);
+            await storage.set('token', 'mock-local-token');
 
             setLoading(false);
             history.replace('/dashboard');

@@ -10,8 +10,7 @@ import {
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import './Signup.css';
-
-const API_URL = 'http://localhost:3001/api/auth/register';
+import { Storage } from '@ionic/storage';
 
 const LANGUAGE_OPTIONS = [
     { label: "English", value: "en" },
@@ -21,6 +20,9 @@ const LANGUAGE_OPTIONS = [
     { label: "Hindi", value: "hi" },
     { label: "Nepali", value: "ne" }
 ];
+
+const storage = new Storage();
+storage.create();
 
 const Signup: React.FC = () => {
     const [phone, setPhone] = useState('');
@@ -38,31 +40,14 @@ const Signup: React.FC = () => {
         }
 
         setLoading(true);
+
         try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone, name, language })
-            });
-            const data = await response.json();
-
-            if (!response.ok) {
-                setError(data.error || data.message || 'Signup failed. Please check your details and try again.');
-                setLoading(false);
-                return;
-            }
-
-            // Save language code (not label)
-            if (data.token) localStorage.setItem('authToken', data.token);
-            if (data.user) {
-                localStorage.setItem('userProfile', JSON.stringify(data.user));
-            } else {
-                localStorage.setItem('userProfile', JSON.stringify({ phone, name, language }));
-            }
-
+            const user = { phone, name, language };
+            await storage.set('userProfile', user);
+            await storage.set('authToken', 'local-dev-token');
             history.replace('/dashboard');
-        } catch (err: any) {
-            setError('Network error. Please try again.');
+        } catch (err) {
+            setError('Storage error. Please try again.');
         } finally {
             setLoading(false);
         }

@@ -12,6 +12,7 @@ import {
 } from "@ionic/react";
 import { arrowBackOutline, trashOutline } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
+import { Storage } from '@ionic/storage';
 import "./PhraseList.css";
 import ProfileIcon from "../../components/ProfileIcon/ProfileIcon";
 
@@ -29,12 +30,13 @@ type RecordingItem = {
     _id: string;
     filename: string;
     date: string | number;
-    translation?: string; // for displaying translation on this session
+    translation?: string;
     language?: string;
 };
 
 const PhraseList: React.FC = () => {
     const [recordings, setRecordings] = useState<RecordingItem[]>([]);
+    const [localRecordings, setLocalRecordings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [translating, setTranslating] = useState<string | null>(null);
     const [deleting, setDeleting] = useState<string | null>(null);
@@ -42,13 +44,27 @@ const PhraseList: React.FC = () => {
     const [present] = useIonToast();
     const history = useHistory();
 
-    const authToken = localStorage.getItem("authToken");
-    const userProfile = JSON.parse(localStorage.getItem("userProfile") || "{}");
-    const userLanguage = userProfile.language || "en";
+    const [authToken, setAuthToken] = useState('');
+    const [userLanguage, setUserLanguage] = useState('en');
 
     useEffect(() => {
-        fetchRecordings();
+        const loadStorage = async () => {
+            const storage = new Storage();
+            await storage.create();
+            const token = await storage.get('authToken');
+            const profile = await storage.get('userProfile');
+            setAuthToken(token || '');
+            setUserLanguage(profile?.language || 'en');
 
+            const storedLocal = await storage.get('recordings');
+            const parsedLocal = storedLocal ? JSON.parse(storedLocal) : [];
+            setLocalRecordings(parsedLocal);
+        };
+        loadStorage();
+    }, []);
+
+    useEffect(() => {
+        if (authToken) fetchRecordings();
     }, [authToken]);
 
     const fetchRecordings = async () => {
@@ -81,7 +97,6 @@ const PhraseList: React.FC = () => {
         setDeleting(null);
     };
 
-    // Handle translation (display translation in-session)
     const handleTranslate = async (rec: RecordingItem) => {
         setTranslating(rec._id);
         const targetLanguage = selectedLang[rec._id] || "en";
@@ -121,78 +136,67 @@ const PhraseList: React.FC = () => {
         setTranslating(null);
     };
 
-    // Show latest first
     const sortedRecordings = [...recordings].sort((a, b) => +new Date(b.date) - +new Date(a.date));
 
     return (
         <IonPage>
             <IonContent fullscreen className="phrase-list-bg">
                 <div className="phrase-list-card">
-                    <IonButton
-                        fill="clear"
-                        className="back-btn"
-                        onClick={() => history.push("/dashboard")}
-                    >
-                        <IonIcon icon={arrowBackOutline} slot="icon-only" />
-                    </IonButton>
+                    <IonButton fill="clear" className="back-btn" onClick={() => history.push("/dashboard")}> <IonIcon icon={arrowBackOutline} slot="icon-only" /> </IonButton>
                     <ProfileIcon />
                     <IonText className="phrase-list-title">My PhraseList</IonText>
                     <div className="phrase-list-container">
                         {loading ? (
                             <IonSpinner name="dots" className="loading-spinner" />
-                        ) : sortedRecordings.length === 0 ? (
-                            <IonText color="medium" className="empty-msg">
-                                No recordings found.
-                            </IonText>
                         ) : (
-                            sortedRecordings.map((rec, i) => (
-                                <div className="recording-item" key={rec._id}>
+                            [...localRecordings.slice(0, 2), ...sortedRecordings].map((rec, i) => (
+                                <div className="recording-item" key={rec._id || rec.id}>
                                     <div className="item-inner">
                                         <div className="recording-meta">
                                             <div className="recording-index">Recording {i + 1}</div>
                                             <div className="recording-name">{rec.filename}</div>
                                         </div>
-                                        <audio controls src={`${API_URL}/recordings/${rec.filename}`} className="recording-audio" />
-                                        <div style={{ marginTop: 8 }}>
-                                            <IonSelect
-                                                interface="popover"
-                                                value={selectedLang[rec._id] || "en"}
-                                                placeholder="Select Target Language"
-                                                onIonChange={e =>
-                                                    setSelectedLang({ ...selectedLang, [rec._id]: e.detail.value })
-                                                }
-                                                className="lang-select"
-                                                style={{ width: 160 }}
-                                            >
-                                                {LANGUAGE_OPTIONS.map(opt => (
-                                                    <IonSelectOption key={opt.value} value={opt.value}>{opt.label}</IonSelectOption>
-                                                ))}
-                                            </IonSelect>
-                                            <IonButton
-                                                size="small"
-                                                fill="clear"
-                                                disabled={translating === rec._id}
-                                                onClick={() => handleTranslate(rec)}
-                                                className="translate-btn"
-                                                style={{ marginTop: 10 }}
-                                            >
-    {translating === rec._id ? <IonSpinner name="dots" /> : 'Translate'}
-
-                                                {/* {translating === rec._id && <IonSpinner name="dots" />} */}
-                                            </IonButton>
-                                        </div>
-                                        {rec.translation && (
-                                            <div className="recording-translation" style={{ marginTop: 10 }}>
-                                                <b>Translation ({LANGUAGE_LABEL_MAP[rec.language!] || rec.language}):</b>
-                                                <br />
-                                                <IonText className="recording-translation-text">{rec.translation}</IonText>
-                                            </div>
+                                        <audio controls src={rec.audioData ? rec.audioData : `${API_URL}/recordings/${rec.filename}`} className="recording-audio" />
+                                        {rec._id && (
+                                            <>
+                                                <div style={{ marginTop: 8 }}>
+                                                    <IonSelect
+                                                        interface="popover"
+                                                        value={selectedLang[rec._id] || "en"}
+                                                        placeholder="Select Target Language"
+                                                        onIonChange={e => setSelectedLang({ ...selectedLang, [rec._id]: e.detail.value })}
+                                                        className="lang-select"
+                                                        style={{ width: 160 }}
+                                                    >
+                                                        {LANGUAGE_OPTIONS.map(opt => (
+                                                            <IonSelectOption key={opt.value} value={opt.value}>{opt.label}</IonSelectOption>
+                                                        ))}
+                                                    </IonSelect>
+                                                    <IonButton
+                                                        size="small"
+                                                        fill="clear"
+                                                        disabled={translating === rec._id}
+                                                        onClick={() => handleTranslate(rec)}
+                                                        className="translate-btn"
+                                                        style={{ marginTop: 10 }}
+                                                    >
+                                                        {translating === rec._id ? <IonSpinner name="dots" /> : 'Translate'}
+                                                    </IonButton>
+                                                </div>
+                                                {rec.translation && (
+                                                    <div className="recording-translation" style={{ marginTop: 10 }}>
+                                                        <b>Translation ({LANGUAGE_LABEL_MAP[rec.language!] || rec.language}):</b>
+                                                        <br />
+                                                        <IonText className="recording-translation-text">{rec.translation}</IonText>
+                                                    </div>
+                                                )}
+                                                <div className="recording-actions">
+                                                    <IonButton fill="clear" size="small" className="delete-btn" onClick={() => handleDelete(rec._id)}>
+                                                        <IonIcon icon={trashOutline} size="small" color="light" slot="icon-only" />
+                                                    </IonButton>
+                                                </div>
+                                            </>
                                         )}
-                                        <div className="recording-actions">
-                                            <IonButton fill="clear" size="small" className="delete-btn" onClick={() => handleDelete(rec._id)}>
-                                                <IonIcon icon={trashOutline} size="small" color="light" slot="icon-only" />
-                                            </IonButton>
-                                        </div>
                                     </div>
                                 </div>
                             ))

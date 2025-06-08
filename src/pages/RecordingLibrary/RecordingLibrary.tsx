@@ -6,6 +6,10 @@ import { arrowBackOutline, createOutline, trashOutline, downloadOutline } from '
 import { useHistory } from 'react-router-dom';
 import './RecordingLibrary.css';
 import ProfileIcon from '../../components/ProfileIcon/ProfileIcon';
+import { Storage } from '@ionic/storage';
+
+const storage = new Storage();
+storage.create();
 
 const RecordingLibrary: React.FC = () => {
     const [recordings, setRecordings] = useState<any[]>([]);
@@ -14,23 +18,27 @@ const RecordingLibrary: React.FC = () => {
 
     useEffect(() => {
         setLoading(true);
-        const stored = localStorage.getItem('recordings');
-        const parsed = stored ? JSON.parse(stored) : [];
+        loadRecordings();
+    }, []);
+
+    const loadRecordings = async () => {
+        const stored = await storage.get('recordings');
+        const parsed = stored || [];
         setRecordings(parsed);
         setLoading(false);
-    }, []);
+    };
 
     const handleEdit = (rec: any) => {
         history.push({
-            pathname: `/edit-recording/${rec.id}`, // Use local ID (timestamp)
+            pathname: `/edit-recording/${rec.id}`,
             state: { filename: rec.filename }
         });
     };
 
-    const handleDelete = (recordingId: number) => {
+    const handleDelete = async (recordingId: number) => {
         if (!window.confirm('Delete this recording?')) return;
         const updated = recordings.filter((rec: any) => rec.id !== recordingId);
-        localStorage.setItem('recordings', JSON.stringify(updated));
+        await storage.set('recordings', updated);
         setRecordings(updated);
     };
 

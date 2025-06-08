@@ -4,6 +4,10 @@ import { micOutline } from 'ionicons/icons';
 import { useIonRouter } from '@ionic/react';
 import './NewRecording.css';
 import ProfileIcon from '../../components/ProfileIcon/ProfileIcon';
+import { Storage } from '@ionic/storage';
+
+const storage = new Storage();
+storage.create();
 
 const NewRecording: React.FC = () => {
     const [recording, setRecording] = useState<MediaRecorder | null>(null);
@@ -40,14 +44,14 @@ const NewRecording: React.FC = () => {
         }
     };
 
-    const saveRecordingLocally = (blob: Blob) => {
+    const saveRecordingLocally = async (blob: Blob) => {
         setIsSaving(true);
         setMessage('Saving...');
 
         const reader = new FileReader();
-        reader.onloadend = () => {
+        reader.onloadend = async () => {
             const base64Audio = reader.result as string;
-            const existing = JSON.parse(localStorage.getItem('recordings') || '[]');
+            const existing = await storage.get('recordings') || [];
 
             const newRecording = {
                 id: Date.now(),
@@ -56,12 +60,12 @@ const NewRecording: React.FC = () => {
                 createdAt: new Date().toISOString()
             };
 
-            localStorage.setItem('recordings', JSON.stringify([...existing, newRecording]));
+            await storage.set('recordings', [...existing, newRecording]);
             setMessage('Recording saved to library!');
             setIsSaving(false);
         };
 
-        reader.readAsDataURL(blob); // Convert blob to base64 string
+        reader.readAsDataURL(blob);
     };
 
     return (
