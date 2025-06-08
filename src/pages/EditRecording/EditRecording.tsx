@@ -13,6 +13,8 @@ storage.create();
 
 type PhraseSegment = { start: number; end: number };
 
+const MIN_DURATION = 0.1; // Minimum segment length (in seconds) for any segment
+
 const EditRecording: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const history = useHistory();
@@ -25,7 +27,10 @@ const EditRecording: React.FC = () => {
     const [message, setMessage] = useState('');
     const [present] = useIonToast();
 
-    // Format seconds as mm:ss
+    // Error states for warnings below sliders
+    const [sourceError, setSourceError] = useState('');
+    const [targetError, setTargetError] = useState('');
+
     function formatTime(t: number) {
         if (!isFinite(t) || isNaN(t) || t < 0) return "--:--";
         const m = Math.floor(t / 60);
@@ -67,6 +72,33 @@ const EditRecording: React.FC = () => {
         setSourcePhrase({ start: 0, end: half });
         setTargetPhrase({ start: half, end: dur });
         setAudioLoaded(true);
+    };
+
+    // Validate segments on every update
+    useEffect(() => {
+        let sourceMsg = '';
+        let targetMsg = '';
+        if (sourcePhrase.end - sourcePhrase.start < MIN_DURATION) {
+            sourceMsg = 'Segment must be at least 0.1s long.';
+        }
+        if (targetPhrase.end - targetPhrase.start < MIN_DURATION) {
+            targetMsg = 'Segment must be at least 0.1s long.';
+        }
+        if (sourcePhrase.end > targetPhrase.start) {
+            sourceMsg = 'Original must end before translation starts.';
+            targetMsg = 'Translation must start after original ends.';
+        }
+        setSourceError(sourceMsg);
+        setTargetError(targetMsg);
+    }, [sourcePhrase, targetPhrase]);
+
+    const isValidSegments = () => {
+        if (sourcePhrase.end - sourcePhrase.start < MIN_DURATION) return false;
+        if (targetPhrase.end - targetPhrase.start < MIN_DURATION) return false;
+        if (sourcePhrase.end > targetPhrase.start) return false;
+        if (sourcePhrase.start < 0 || sourcePhrase.end > duration) return false;
+        if (targetPhrase.start < 0 || targetPhrase.end > duration) return false;
+        return true;
     };
 
     const previewSegment = async (start: number, end: number) => {
@@ -131,6 +163,11 @@ const EditRecording: React.FC = () => {
     }
 
     const saveEdits = async () => {
+        // Final validation before save
+        if (!isValidSegments()) {
+            present({ message: 'Choose valid segment times! Segments must be at least 0.1s long and not overlap.', duration: 2400, color: 'danger' });
+            return;
+        }
         if (!recording || !recording.audioData) {
             present({ message: 'No recording loaded.', duration: 1800, color: 'danger' });
             return;
@@ -286,6 +323,7 @@ const EditRecording: React.FC = () => {
                                                     }
                                                 }}
                                             />
+                                            {sourceError && <div style={{ color: "#FF4D4D", fontWeight: 600, fontSize: "0.96em", marginTop: 4 }}>{sourceError}</div>}
                                         </div>
                                         <IonButton className="trim-btn" onClick={() => previewSegment(sourcePhrase.start, sourcePhrase.end)}>
                                             Preview Original
@@ -317,14 +355,26 @@ const EditRecording: React.FC = () => {
                                                     setTargetPhrase({ start: safeLower, end: safeUpper });
                                                 }}
                                             />
+                                            {targetError && <div style={{ color: "#FF4D4D", fontWeight: 600, fontSize: "0.96em", marginTop: 4 }}>{targetError}</div>}
                                         </div>
                                         <IonButton className="trim-btn" onClick={() => previewSegment(targetPhrase.start, targetPhrase.end)}>
                                             Preview Translation
                                         </IonButton>
                                     </div>
-                                    <IonButton expand="block" color="success" className="save-btn" onClick={saveEdits}>
+                                    <IonButton
+                                        expand="block"
+                                        color="success"
+                                        className="save-btn"
+                                        onClick={saveEdits}
+                                        disabled={!isValidSegments()}
+                                    >
                                         Save Both Segments
                                     </IonButton>
+                                    {!isValidSegments() && (
+                                        <div style={{ color: "#FF4D4D", fontWeight: 600, marginTop: 10 }}>
+                                            Choose valid segment times to enable saving!
+                                        </div>
+                                    )}
                                 </>
                             )}
                         </>
