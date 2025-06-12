@@ -47,24 +47,46 @@ const NewRecording: React.FC = () => {
     const saveRecordingLocally = async (blob: Blob) => {
         setIsSaving(true);
         setMessage('Saving...');
+        const audio = new Audio();
+        const blobUrl = URL.createObjectURL(blob);
+        audio.src = blobUrl;
 
+        // Magic: patch duration if Infinity/NaN
+        audio.addEventListener('loadedmetadata', async () => {
+            let duration = audio.duration;
+            // Hack for WebM: seek near end if Infinity
+            if (!isFinite(duration) || duration <= 0 || duration === Infinity) {
+                audio.currentTime = 1e101;
+                audio.ontimeupdate = async () => {
+                    audio.ontimeupdate = null;
+                    duration = audio.duration;
+                    URL.revokeObjectURL(blobUrl);
+                    await finishSave(duration, blob);
+                };
+            } else {
+                URL.revokeObjectURL(blobUrl);
+                await finishSave(duration, blob);
+            }
+        });
+    };
+
+    const finishSave = async (duration: number, blob: Blob) => {
         const reader = new FileReader();
         reader.onloadend = async () => {
             const base64Audio = reader.result as string;
             const existing = await storage.get('recordings') || [];
-
             const newRecording = {
                 id: Date.now(),
                 filename: `recording-${Date.now()}.webm`,
                 audioData: base64Audio,
-                createdAt: new Date().toISOString()
+                audioType: 'audio/webm',
+                createdAt: new Date().toISOString(),
+                duration: duration
             };
-
             await storage.set('recordings', [...existing, newRecording]);
             setMessage('Recording saved to library!');
             setIsSaving(false);
         };
-
         reader.readAsDataURL(blob);
     };
 
