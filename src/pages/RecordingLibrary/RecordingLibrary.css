@@ -198,17 +198,23 @@
 
 .edit-btn ion-icon {
     color: #4fa7fc !important;
-    font-size: 22px;
+    font-size: 10px;
+   
 }
 
 .delete-btn ion-icon {
-    color: #ff5c5c !important;
+    background-color: #eb445a    !important;
     font-size: 22px;
+    border-radius: 8px;
+    padding: 6px;
+  
 }
 
 .download-btn ion-icon {
-    color: #4ec4a8 !important;
-    font-size: 22px;
+    background-color: #3880ff; /* Ion blue */
+    border-radius: 8px;
+    padding: 6px;
+  
 }
 
 /* 9. Responsive design */

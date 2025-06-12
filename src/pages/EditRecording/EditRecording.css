@@ -118,11 +118,11 @@
 .edit-btn {
     background: var(--phrase-btn-grad);
     color: #fff;
-    border-radius: 1.4rem;
+    border-radius:8px;
     font-weight: 600;
     font-size: 0.98em;
     letter-spacing: 0.2px;
-    padding: 7px 20px;
+    /* padding: 7px 20px; */
     margin-right: 7px;
     border: none;
     box-shadow: 0 2px 8px 0 rgba(69, 121, 245, 0.08);
