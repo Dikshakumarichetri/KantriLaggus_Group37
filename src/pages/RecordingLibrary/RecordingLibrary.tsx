@@ -24,7 +24,11 @@ const RecordingLibrary: React.FC = () => {
     const loadRecordings = async () => {
         const stored = await storage.get('recordings');
         const parsed = stored || [];
-        setRecordings(parsed);
+
+        const userRecordings = parsed.filter((rec: any) =>
+            !(rec.filename.startsWith('original_') || rec.filename.startsWith('translated_'))
+        );
+        setRecordings(userRecordings);
         setLoading(false);
     };
 
